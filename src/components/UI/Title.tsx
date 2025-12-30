@@ -1,9 +1,14 @@
 interface TitleProps {
+    className?: string;
     children: React.ReactNode;
     type?: 'h1' | 'h2' | 'h3';
 }
 
-export default function Title({ children, type = 'h1' }: TitleProps) {
+export default function Title({
+    children,
+    type = 'h1',
+    className,
+}: TitleProps) {
     const Tag = type;
     const sizeClasses = {
         h1: 'text-4xl',
@@ -12,7 +17,9 @@ export default function Title({ children, type = 'h1' }: TitleProps) {
     };
     return (
         <Tag
-            className={`font-bold bg-gradient-to-r w-max from-amber-700 to-amber-300 text-transparent bg-clip-text ${sizeClasses[type]}`}
+            className={`font-bold bg-gradient-to-r w-max from-amber-700 to-amber-300 text-transparent bg-clip-text leading-tight ${
+                sizeClasses[type]
+            } ${className ?? ''}`}
         >
             {children}
         </Tag>

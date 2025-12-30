@@ -1,6 +1,8 @@
 import { Movie, TV } from '@/types/types';
 import Image from 'next/image';
 import CircleProgress from '../UI/CircleProgress';
+import LineTitle from '../UI/LineTitle';
+import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
 
 interface mediaDetailProps {
     data: Movie | TV;
@@ -58,18 +60,12 @@ export default function FilmDetail({ data, type }: mediaDetailProps) {
                         </div>
                     </div>
                     <div>
-                        <h3 className="text-xl font-medium text-amber-500 mb-2 flex items-center uppercase gap-4">
-                            Overview
-                            <span className="block h-[2px] bg-amber-500 grow"></span>
-                        </h3>
-                        <p>{data.overview}</p>
+                        <LineTitle type="h3">Overview</LineTitle>
+                        <div>{decodeHtmlEntities(data.overview)}</div>
                     </div>
                     {data.genres?.length && (
                         <div>
-                            <h3 className="text-xl font-medium text-amber-500 mb-2 flex items-center uppercase gap-4">
-                                Genres
-                                <span className="block h-[2px] bg-amber-500 grow"></span>
-                            </h3>
+                            <LineTitle type="h3">Genres</LineTitle>
                             <ul className="flex flex-wrap gap-2 mt-4">
                                 {data.genres.map((item) => (
                                     <li

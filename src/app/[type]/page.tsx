@@ -1,6 +1,7 @@
 import FilmGrid from '@/components/filmGrid/FilmGrid';
 import FilmGridLoading from '@/components/filmGrid/FilmGridLoading';
 import FiltersServer from '@/components/filters/FiltersServer';
+import Title from '@/components/UI/Title';
 import { Suspense } from 'react';
 
 interface MoviesPageProps {
@@ -23,9 +24,9 @@ export default async function MoviesPage({
 
     return (
         <>
-            <h1 className="text-2xl font-bold mb-4">
+            <Title type="h1" className="mb-4">
                 Discover {type === 'movie' ? 'Movies' : 'Tv Shows'}
-            </h1>
+            </Title>
             <div className="flex gap-4">
                 <FiltersServer type={type} />
                 <Suspense

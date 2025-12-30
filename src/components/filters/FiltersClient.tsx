@@ -85,11 +85,11 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
     };
 
     return (
-        <div className="border border-amber-500 w-[250px] shrink-0 self-start">
-            <div className="bg-amber-500 text-black px-4 py-2 font-semibold text-lg">
+        <div className="bg-gradient-to-l from-amber-700 to-amber-300 w-[250px] shrink-0 self-start p-px">
+            <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg">
                 Sorting
             </div>
-            <div className="p-4 flex flex-col gap-2">
+            <div className="p-4 flex flex-col gap-2 bg-black">
                 {sortList.map((item) => (
                     <label
                         htmlFor={item.query}
@@ -115,10 +115,10 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
                     </label>
                 ))}
             </div>
-            <div className="bg-amber-500 text-black px-4 py-2 font-semibold text-lg">
+            <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg">
                 Genres
             </div>
-            <div>
+            <div className="bg-black">
                 {data.map((item) => (
                     <label
                         htmlFor={String(item.id)}
@@ -146,7 +146,7 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
             <button
                 disabled={!isFiltersChanged()}
                 onClick={applyFilters}
-                className="bg-amber-500 text-black w-full py-3 font-bold sticky bottom-0 cursor-pointer disabled:bg-slate-500 disabled:pointer-events-none"
+                className="bg-amber-500 text-black w-full py-3 font-bold sticky bottom-0 cursor-pointer disabled:hidden disabled:pointer-events-none"
             >
                 Aplly
             </button>
