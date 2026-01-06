@@ -3,6 +3,7 @@ import FilmGridLoading from '@/components/filmGrid/FilmGridLoading';
 import FiltersServer from '@/components/filters/FiltersServer';
 import Title from '@/components/UI/Title';
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 
 interface MoviesPageProps {
     params: {
@@ -12,6 +13,27 @@ interface MoviesPageProps {
         page?: string;
         sort?: string;
         with_genres?: string;
+    };
+}
+
+export async function generateMetadata({
+    params,
+}: MoviesPageProps): Promise<Metadata> {
+    const { type } = params;
+    const isMovie = type === 'movie';
+    const title = isMovie ? 'Discover Movies' : 'Discover TV Shows';
+    const description = isMovie
+        ? 'Discover and explore thousands of movies. Browse by genre, ratings, and popularity.'
+        : 'Discover and explore thousands of TV shows. Browse by genre, ratings, and popularity.';
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            type: 'website',
+        },
     };
 }
 

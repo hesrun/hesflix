@@ -1,4 +1,5 @@
-import { Movie, TV } from '@/types/types';
+import { Movie } from '@/types/movie';
+import { TV } from '@/types/tv';
 import { LucideFilm } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';

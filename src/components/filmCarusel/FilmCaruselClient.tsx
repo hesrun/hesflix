@@ -1,5 +1,6 @@
 'use client';
-import { Movie, TV } from '@/types/types';
+import { Movie } from '@/types/movie';
+import { TV } from '@/types/tv';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState, ComponentPropsWithRef } from 'react';
 import { EmblaCarouselType } from 'embla-carousel';

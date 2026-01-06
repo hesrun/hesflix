@@ -1,5 +1,5 @@
 'use client';
-import { Genre } from '@/types/types';
+import { Genre } from '@/types/common';
 import { LucideCheck } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';

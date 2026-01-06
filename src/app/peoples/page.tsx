@@ -1,6 +1,7 @@
 import PeoplesGridSkeleton from '@/components/peoples/PeoplesGridSkeleton';
 import PeoplesServer from '@/components/peoples/PeoplesServer';
 import Title from '@/components/UI/Title';
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 interface PeoplesPageProps {
@@ -8,6 +9,19 @@ interface PeoplesPageProps {
         page?: string;
     };
 }
+
+export const metadata: Metadata = {
+    title: 'Peoples',
+    description: 'Browse popular actors and actresses from movies and TV shows',
+    openGraph: {
+        title: 'Peoples',
+        type: 'website',
+        description:
+            'Browse popular actors and actresses from movies and TV shows',
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/peoples`,
+        siteName: 'HessFlix',
+    },
+};
 
 export default function Peoples({ searchParams }: PeoplesPageProps) {
     return (

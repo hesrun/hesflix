@@ -1,4 +1,4 @@
-import { Credit } from '@/types/types';
+import { Credit } from '@/types/credits';
 import Image from 'next/image';
 
 export default function CreditsListCard({ data }: { data: Credit }) {

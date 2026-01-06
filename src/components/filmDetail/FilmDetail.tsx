@@ -1,4 +1,5 @@
-import { Movie, TV } from '@/types/types';
+import { Movie } from '@/types/movie';
+import { TV } from '@/types/tv';
 import Image from 'next/image';
 import CircleProgress from '../UI/CircleProgress';
 import LineTitle from '../UI/LineTitle';

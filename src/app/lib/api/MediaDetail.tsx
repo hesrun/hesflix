@@ -1,6 +1,7 @@
 import { BASE_URL } from '@/constants/urls';
 import { fetchFromTMDB } from '../fetcher';
-import { Movie, TV } from '@/types/types';
+import { Movie } from '@/types/movie';
+import { TV } from '@/types/tv';
 
 type MediaType = 'movie' | 'tv';
 
