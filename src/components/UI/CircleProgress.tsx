@@ -2,6 +2,7 @@ interface CircleProgressProps {
     vote: number;
     size?: 'small' | 'large';
 }
+
 export default function CircleProgress({
     vote,
     size = 'small',
@@ -22,9 +23,15 @@ export default function CircleProgress({
     } else if (percent < 70) {
         color = '#facc15';
     }
+
     return (
         <div
-            style={{ '--value': `${percent}%`, '--color': color }}
+            style={
+                {
+                    '--value': `${percent}%`,
+                    '--color': color,
+                } as React.CSSProperties
+            }
             className={`
              rounded-full  bg-[conic-gradient(var(--color)_0%_var(--value),_black_var(--value)_100%)] relative ${sizeClasses.outer}`}
         >

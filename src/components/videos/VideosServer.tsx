@@ -1,6 +1,5 @@
 import getMediaVideos from '@/app/lib/api/MediaVideos';
 import VideosGrid from './VideosGrid';
-import JsonDisp from '@/app/helpers/JsonDisp';
 
 interface VideosServerProps {
     type: 'movie' | 'tv';

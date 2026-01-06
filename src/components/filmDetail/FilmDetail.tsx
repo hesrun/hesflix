@@ -5,7 +5,6 @@ import CircleProgress from '../UI/CircleProgress';
 import LineTitle from '../UI/LineTitle';
 import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
 import Title from '../UI/Title';
-import WatchTrailerButton from '../UI/WatchTrailerButton';
 
 interface mediaDetailProps {
     data: Movie | TV;

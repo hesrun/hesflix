@@ -1,6 +1,5 @@
 import getPerson from '@/app/lib/api/Persons';
 import Title from '../UI/Title';
-import JsonDisp from '@/app/helpers/JsonDisp';
 import Image from 'next/image';
 import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
 import { formatDate, calculateAge } from '@/app/utils/FormatDate';

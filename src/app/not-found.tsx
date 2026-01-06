@@ -8,7 +8,7 @@ export default function NotFound() {
                 404
             </Title>
             <p className="text-gray-400 mt-4 text-center">
-                Sorry, we couldn't find what you're looking for.
+                Sorry, we couldn&apos;t find what you&apos;re looking for.
             </p>
             <Link
                 href="/"

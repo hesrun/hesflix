@@ -13,7 +13,7 @@ export interface Movie {
     vote_average: number;
     vote_count: number;
     genre_ids?: number[];
-    genres?: any[];
+    genres?: { id: number; name: string }[];
 }
 
 export interface FilmsResponse {
