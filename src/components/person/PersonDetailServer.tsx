@@ -11,12 +11,11 @@ export default async function PersonDetailServer({
 }: {
     params: { id: string };
 }) {
-    const person = await getPerson(Number(params.id));
+    const personParams = await params;
+    const person = await getPerson(Number(personParams.id));
 
     return (
         <>
-            <JsonDisp data={person} />
-
             <div className="grid gap-8 grid-cols-[300px_1fr]">
                 <div>
                     <Image

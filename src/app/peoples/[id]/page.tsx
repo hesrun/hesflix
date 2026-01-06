@@ -3,6 +3,7 @@ import Title from '@/components/UI/Title';
 import getPerson from '@/app/lib/api/Persons';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
+import BackLink from '@/components/UI/BackLink';
 
 interface PersonDetailsProps {
     params: {
@@ -13,7 +14,7 @@ interface PersonDetailsProps {
 export async function generateMetadata({
     params,
 }: PersonDetailsProps): Promise<Metadata> {
-    const { id } = params;
+    const { id } = await params;
     const person = await getPerson(Number(id));
     const metaTitle = person.name;
     const metaDescription =
@@ -38,13 +39,16 @@ export async function generateMetadata({
     return meta;
 }
 
-export default function PersonDetails({ params }: PersonDetailsProps) {
+export default async function PersonDetails({ params }: PersonDetailsProps) {
+    const { id } = await params;
+
     return (
         <>
+            <BackLink label="Back" />
             <Suspense
                 fallback={<Title type="h1">Loading Person Details...</Title>}
             >
-                <PersonDetailServer params={params} />
+                <PersonDetailServer params={{ id }} />
             </Suspense>
         </>
     );

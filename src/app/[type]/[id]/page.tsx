@@ -2,7 +2,10 @@ import getMediaDetail from '@/app/lib/api/MediaDetail';
 import CreditsListLoading from '@/components/creditsList/CreditsListLoading';
 import CreditsListServer from '@/components/creditsList/CreditsListServer';
 import FilmDetail from '@/components/filmDetail/FilmDetail';
+import BackLink from '@/components/UI/BackLink';
 import Title from '@/components/UI/Title';
+import VideosGridSkeleton from '@/components/videos/VideosGridSkeleton';
+import VideosServer from '@/components/videos/VideosServer';
 import { Movie } from '@/types/movie';
 import { TV } from '@/types/tv';
 import { Metadata } from 'next';
@@ -19,7 +22,7 @@ interface MediaDetailProps {
 export async function generateMetadata({
     params,
 }: MediaDetailProps): Promise<Metadata> {
-    const { id, type } = params;
+    const { id, type } = await params;
     const data = await getMediaDetail(type, id);
     const metaTitle =
         type === 'movie' ? (data as Movie).title : (data as TV).name;
@@ -50,16 +53,19 @@ export default async function MoviePage({ params }: MediaDetailProps) {
     const mediaData = await getMediaDetail(type, id);
     return (
         <>
-            <Link
-                className="mb-8 inline-block hover:text-amber-500"
-                href={`/${type}`}
-            >
-                Go Back
-            </Link>
+            <BackLink label="Back" />
             <FilmDetail data={mediaData} type={type} />
-            <Title type="h2">Credits</Title>
+            <Title type="h2" className="mb-6">
+                Credits
+            </Title>
             <Suspense fallback={<CreditsListLoading />}>
                 <CreditsListServer type={type} id={id} />
+            </Suspense>
+            <Title type="h2" className="mb-6">
+                Trailers
+            </Title>
+            <Suspense fallback={<VideosGridSkeleton />}>
+                <VideosServer type={type} id={id} />
             </Suspense>
         </>
     );

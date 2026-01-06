@@ -1,6 +1,5 @@
-import type { People } from '@/types';
+import { People } from '@/types/people';
 import PeoplesCard from './PeoplesCard';
-
 interface PeoplesGridProps {
     peoples: People[];
 }

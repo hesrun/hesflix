@@ -19,7 +19,7 @@ interface MoviesPageProps {
 export async function generateMetadata({
     params,
 }: MoviesPageProps): Promise<Metadata> {
-    const { type } = params;
+    const { type } = await params;
     const isMovie = type === 'movie';
     const title = isMovie ? 'Discover Movies' : 'Discover TV Shows';
     const description = isMovie
@@ -41,8 +41,8 @@ export default async function MoviesPage({
     searchParams,
     params,
 }: MoviesPageProps) {
-    const { type } = params;
-    const paramsSearch = searchParams;
+    const { type } = await params;
+    const paramsSearch = await searchParams;
 
     return (
         <>

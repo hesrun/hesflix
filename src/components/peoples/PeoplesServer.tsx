@@ -1,8 +1,6 @@
 import getPeoples from '@/app/lib/api/Peoples';
 import PeoplesGrid from './PeoplesGrid';
 import Pagination from '../UI/Pagination';
-import { log } from 'console';
-
 interface PeoplesPageProps {
     searchParams: {
         page?: string;
@@ -12,10 +10,9 @@ interface PeoplesPageProps {
 export default async function PeoplesServer({
     searchParams,
 }: PeoplesPageProps) {
-    const page = Number(searchParams.page) || 1;
+    const params = await searchParams;
+    const page = Number(params.page) || 1;
     const data = await getPeoples(page);
-
-    log(data);
 
     return (
         <div>

@@ -4,6 +4,8 @@ import Image from 'next/image';
 import CircleProgress from '../UI/CircleProgress';
 import LineTitle from '../UI/LineTitle';
 import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
+import Title from '../UI/Title';
+import WatchTrailerButton from '../UI/WatchTrailerButton';
 
 interface mediaDetailProps {
     data: Movie | TV;
@@ -33,14 +35,12 @@ export default function FilmDetail({ data, type }: mediaDetailProps) {
                 </div>
                 <div className="flex flex-col gap-6">
                     <div>
-                        <h1 className="text-4xl flex gap-2">
-                            <span className="text-amber-500">
-                                {media.title}
-                            </span>
-                            <span className="text-white/50">{`(${
+                        <div className="flex items-baseline gap-4">
+                            <Title type="h1">{media.title}</Title>
+                            <span className="text-white/50 text-3xl">{`(${
                                 media.date.split('-')[0]
                             })`}</span>
-                        </h1>
+                        </div>
                         {media.tagline && (
                             <div className="flex gap-1 text-xl text-gray-600">
                                 <span>❝</span>
@@ -83,8 +83,8 @@ export default function FilmDetail({ data, type }: mediaDetailProps) {
             </div>
             {media.seasons && (
                 <div>
-                    <h2 className="text-2xl font-bold mb-4">Seasons</h2>
-                    <div className="flex overflow-auto gap-4 scroll pb-4">
+                    <Title type="h2">Seasons List</Title>
+                    <div className="flex overflow-auto gap-4 scroll pb-4 mb-8">
                         {media.seasons.map((item) => (
                             <div
                                 key={item.id}
@@ -117,7 +117,6 @@ export default function FilmDetail({ data, type }: mediaDetailProps) {
                     </div>
                 </div>
             )}
-            {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         </>
     );
 }
