@@ -3,6 +3,7 @@ import Title from '../UI/Title';
 import JsonDisp from '@/app/helpers/JsonDisp';
 import Image from 'next/image';
 import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
+import { formatDate, calculateAge } from '@/app/utils/FormatDate';
 import LineTitle from '../UI/LineTitle';
 
 export default async function PersonDetailServer({
@@ -16,8 +17,8 @@ export default async function PersonDetailServer({
         <>
             <JsonDisp data={person} />
 
-            <div className="flex gap-8">
-                <div className="w-[300px]">
+            <div className="grid gap-8 grid-cols-[300px_1fr]">
+                <div>
                     <Image
                         src={
                             person.profile_path
@@ -36,6 +37,39 @@ export default async function PersonDetailServer({
                     <Title type="h1" className="mb-4">
                         {person.name}
                     </Title>
+                    <div className="flex space-x-8 mb-6">
+                        <div>
+                            <span className="text-white/40 text-sm">
+                                Birthday:
+                            </span>
+                            <div className="text-amber-500 font-semibold">
+                                {person.birthday
+                                    ? formatDate(person.birthday)
+                                    : 'Unknown'}
+                                {person.birthday &&
+                                    ` (Age: ${calculateAge(person.birthday)})`}
+                            </div>
+                        </div>
+                        <div>
+                            <span className="text-white/40 text-sm">
+                                Place of Birth:
+                            </span>
+                            <div className="text-amber-500 font-semibold">
+                                {person.place_of_birth
+                                    ? person.place_of_birth
+                                    : 'Unknown'}
+                            </div>
+                        </div>
+                        <div>
+                            <span className="text-white/40 text-sm">
+                                Gender:
+                            </span>
+                            <div className="text-amber-500 font-semibold">
+                                {person.gender === 1 ? 'Female' : 'Male'}
+                            </div>
+                        </div>
+                    </div>
+                    <div></div>
                     <LineTitle type="h3">Biography</LineTitle>
                     <div className="whitespace-pre-line leading-relaxed">
                         {person.biography
