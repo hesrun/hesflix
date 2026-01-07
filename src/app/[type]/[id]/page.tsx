@@ -9,7 +9,6 @@ import VideosServer from '@/components/videos/VideosServer';
 import { Movie } from '@/types/movie';
 import { TV } from '@/types/tv';
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { Suspense } from 'react';
 
 interface MediaDetailProps {
