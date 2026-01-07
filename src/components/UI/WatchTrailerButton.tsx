@@ -13,11 +13,11 @@ export default function WatchTrailerButton({
     className = '',
     disabled = false,
 }: WatchTrailerButtonProps) {
-    const { openVideo } = useModalStore();
+    const { openModal } = useModalStore();
 
     const handleClick = () => {
         if (videoUrl) {
-            openVideo(videoUrl);
+            openModal(videoUrl);
         }
     };
 
