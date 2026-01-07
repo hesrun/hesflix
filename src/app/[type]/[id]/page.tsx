@@ -1,5 +1,4 @@
 import getMediaDetail from '@/app/lib/api/MediaDetail';
-import CreditsListLoading from '@/components/creditsList/CreditsListLoading';
 import CreditsListServer from '@/components/creditsList/CreditsListServer';
 import FilmDetail from '@/components/filmDetail/FilmDetail';
 import BackLink from '@/components/UI/BackLink';
@@ -10,6 +9,7 @@ import { Movie } from '@/types/movie';
 import { TV } from '@/types/tv';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
+import CreditsListSkeleton from '@/components/creditsList/CreditsListSkeleton';
 
 interface MediaDetailProps {
     params: {
@@ -57,7 +57,7 @@ export default async function MoviePage({ params }: MediaDetailProps) {
             <Title type="h2" className="mb-6">
                 Credits
             </Title>
-            <Suspense fallback={<CreditsListLoading />}>
+            <Suspense fallback={<CreditsListSkeleton />}>
                 <CreditsListServer type={type} id={id} />
             </Suspense>
             <Title type="h2" className="mb-6">

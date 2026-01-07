@@ -1,9 +1,11 @@
 import { Credit } from '@/types/credits';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function CreditsListCard({ data }: { data: Credit }) {
     return (
-        <div
+        <Link
+            href={`/peoples/${data.id}`}
             className="shrink-0 w-[180px] bg-white/10 rounded-lg mb-2 overflow-hidden group"
             key={data.id}
         >
@@ -28,6 +30,6 @@ export default function CreditsListCard({ data }: { data: Credit }) {
                 </h3>
                 <p className="text-sm text-gray-500">{data.character}</p>
             </div>
-        </div>
+        </Link>
     );
 }

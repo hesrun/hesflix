@@ -4,6 +4,7 @@ import { ReactNode, useEffect } from 'react';
 
 interface ModalProps {
     isOpen: boolean;
+    size: 'xxlarge' | 'default' | 'small' | 'large';
     onClose: () => void;
     children: ReactNode;
     title?: string;
@@ -12,12 +13,12 @@ interface ModalProps {
 
 export default function Modal({
     isOpen,
+    size = 'default',
     onClose,
     children,
     title,
     className = '',
 }: ModalProps) {
-    // Prevent body scroll when modal is open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -32,36 +33,43 @@ export default function Modal({
 
     if (!isOpen) return null;
 
+    const getSizeClass = () => {
+        switch (size) {
+            case 'small':
+                return 'max-w-sm';
+            case 'large':
+                return 'max-w-4xl';
+            case 'xxlarge':
+                return 'max-w-4xl md:max-w-7xl';
+            default:
+                return 'max-w-2xl';
+        }
+    };
+
     return (
         <>
-            {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                className="fixed inset-0 bg-slate-800/20 z-40 backdrop-blur-sm"
                 onClick={onClose}
             />
-
-            {/* Modal */}
-            <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+            <div
+                className={`fixed inset-0 flex items-center justify-center z-50 p-4 overflow-y-auto`}
+            >
                 <div
-                    className={`bg-gray-900 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto ${className}`}
+                    className={`bg-gray-900 ${getSizeClass()} w-full rounded-lg shadow-2xl ${className}`}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    {/* Header */}
                     {title && (
-                        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-                            <h2 className="text-xl font-semibold text-white">
-                                {title}
-                            </h2>
+                        <div className="flex items-center justify-between px-4 py-2 bg-amber-500 border-b text-black">
+                            <h2 className="text-xl font-semibold ">{title}</h2>
                             <button
                                 onClick={onClose}
-                                className="text-gray-400 hover:text-white transition-colors text-2xl leading-none"
+                                className=" hover:opacity-50 transition-colors text-2xl leading-none cursor-pointer"
                             >
                                 ✕
                             </button>
                         </div>
                     )}
-
-                    {/* Content */}
                     <div className={title ? '' : 'relative'}>
                         {!title && (
                             <button

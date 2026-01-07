@@ -5,6 +5,7 @@ import CircleProgress from '../UI/CircleProgress';
 import LineTitle from '../UI/LineTitle';
 import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
 import Title from '../UI/Title';
+import Link from 'next/link';
 
 interface mediaDetailProps {
     data: Movie | TV;
@@ -68,11 +69,13 @@ export default function FilmDetail({ data, type }: mediaDetailProps) {
                             <LineTitle type="h3">Genres</LineTitle>
                             <ul className="flex flex-wrap gap-2 mt-4">
                                 {data.genres.map((item) => (
-                                    <li
-                                        key={item.id}
-                                        className="bg-amber-500 px-4 py-1 rounded-4xl text-black text-sm font-medium"
-                                    >
-                                        {item.name}
+                                    <li key={item.id}>
+                                        <Link
+                                            href={`/${type}?with_genres=${item.id}`}
+                                            className="text-amber-500 border border-amber-500 px-4 py-1 rounded-4xl text-sm font-medium hover:bg-amber-500 hover:text-black transition-colors"
+                                        >
+                                            {item.name}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>

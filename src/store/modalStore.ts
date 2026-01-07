@@ -1,24 +1,18 @@
 import { create } from 'zustand';
 
 interface ModalState {
-    // Video Modal
-    isVideoOpen: boolean;
-    videoUrl: string | null;
-    openVideo: (url: string) => void;
-    closeVideo: () => void;
-
-    // Add more modals here in future
-    // isAuthOpen: boolean;
-    // openAuth: () => void;
-    // closeAuth: () => void;
+    isOpen: boolean;
+    title: string | null;
+    data: unknown | null;
+    openModal: <T = unknown>(data?: T, title?: string) => void;
+    closeModal: () => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
-    // Video Modal
-    isVideoOpen: false,
-    videoUrl: null,
-    openVideo: (url: string) => set({ isVideoOpen: true, videoUrl: url }),
-    closeVideo: () => set({ isVideoOpen: false, videoUrl: null }),
-
-    // Add more modals here
+    isOpen: false,
+    title: null,
+    data: null,
+    openModal: (data, title = '') =>
+        set({ isOpen: true, data: data ?? null, title }),
+    closeModal: () => set({ isOpen: false, data: null, title: null }),
 }));

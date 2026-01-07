@@ -1,4 +1,4 @@
-import CreditsListCard from './CreditsListCard';
+import CreditsList from './CreditsList';
 import getMediaCredits from '@/app/lib/api/MediaCredits';
 
 interface CreditsListServer {
@@ -13,11 +13,7 @@ export default async function CreditsListServer({
     const { cast: mediaCredits } = await getMediaCredits(type, id);
     return (
         <>
-            <div className="flex overflow-x-auto gap-4 mb-6 scroll pb-4">
-                {mediaCredits.map((credit) => (
-                    <CreditsListCard key={credit.id} data={credit} />
-                ))}
-            </div>
+            <CreditsList data={mediaCredits} />
         </>
     );
 }
