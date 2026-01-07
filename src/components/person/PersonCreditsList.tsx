@@ -14,9 +14,24 @@ export default function PersonCreditsList({
     if (credits.length === 0) {
         return null;
     }
+
+    const sortedCredits = [...credits].sort((a, b) => {
+        const yearA = parseInt(
+            a.media_type === 'movie'
+                ? a.release_date?.substring(0, 4) || '0'
+                : a.first_air_date?.substring(0, 4) || '0'
+        );
+        const yearB = parseInt(
+            b.media_type === 'movie'
+                ? b.release_date?.substring(0, 4) || '0'
+                : b.first_air_date?.substring(0, 4) || '0'
+        );
+        return yearB - yearA;
+    });
+
     return (
         <div className="space-y-3">
-            {credits.map((credit, index) => {
+            {sortedCredits.map((credit, index) => {
                 const title =
                     credit.media_type === 'movie' ? credit.title : credit.name;
                 const year =

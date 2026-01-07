@@ -4,6 +4,9 @@
 .scroll {
     @include scrollbars(8px, rgba(white, 0.2), rgba(white, 0.05));
 }
+.scroll-vertical {
+    @include scrollbars(4px, #f59e0b, transparent);
+}
 .react-loading-skeleton {
     vertical-align: middle;
 }
