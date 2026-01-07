@@ -1,7 +1,7 @@
 import { Credit } from '@/types/credits';
 import CreditsListCard from './CreditsListCard';
 
-export default async function CreditsList({ data }: { data: Credit[] }) {
+export default function CreditsList({ data }: { data: Credit[] }) {
     return (
         <>
             <div className="flex overflow-x-auto gap-4 mb-6 scroll pb-4">

@@ -1,6 +1,6 @@
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-export default async function VideosGridSkeleton() {
+export default function VideosGridSkeleton() {
     return (
         <div className="flex overflow-x-hidden gap-4 mb-6">
             {Array(6)

@@ -1,7 +1,7 @@
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default async function CreditsListSkeleton() {
+export default function CreditsListSkeleton() {
     return (
         <div className="flex gap-4 mb-6 pb-4 overflow-hidden">
             {Array(10)

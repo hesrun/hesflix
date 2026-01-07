@@ -4,6 +4,8 @@ import getPerson from '@/app/lib/api/Persons';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import BackLink from '@/components/UI/BackLink';
+import PersonCreditsServer from '@/components/person/PersonCreditsServer';
+import PersonCreditsSkeletonGrid from '@/components/person/PersonCreditsSkeletonGrid';
 
 interface PersonDetailsProps {
     params: {
@@ -49,6 +51,12 @@ export default async function PersonDetails({ params }: PersonDetailsProps) {
                 fallback={<Title type="h1">Loading Person Details...</Title>}
             >
                 <PersonDetailServer params={{ id }} />
+            </Suspense>
+            <Title type="h2" className="mb-6">
+                Filmography
+            </Title>
+            <Suspense fallback={<PersonCreditsSkeletonGrid />}>
+                <PersonCreditsServer personId={Number(id)} />
             </Suspense>
         </>
     );

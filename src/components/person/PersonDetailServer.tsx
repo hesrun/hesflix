@@ -4,6 +4,7 @@ import Image from 'next/image';
 import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
 import { formatDate, calculateAge } from '@/app/utils/FormatDate';
 import LineTitle from '../UI/LineTitle';
+import PersonCreditsServer from './PersonCreditsServer';
 
 export default async function PersonDetailServer({
     params,
@@ -15,7 +16,7 @@ export default async function PersonDetailServer({
 
     return (
         <>
-            <div className="grid gap-8 grid-cols-[300px_1fr]">
+            <div className="grid gap-8 grid-cols-[300px_1fr] mb-8">
                 <div>
                     <Image
                         src={
