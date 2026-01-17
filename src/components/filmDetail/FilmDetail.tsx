@@ -3,7 +3,7 @@ import { TV } from '@/types/tv';
 import Image from 'next/image';
 import CircleProgress from '../UI/CircleProgress';
 import LineTitle from '../UI/LineTitle';
-import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
+import decodeHtmlEntities from '@/utils/DecodeHtmlEntities';
 import Title from '../UI/Title';
 import Link from 'next/link';
 

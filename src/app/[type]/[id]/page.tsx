@@ -1,4 +1,4 @@
-import getMediaDetail from '@/app/lib/api/MediaDetail';
+import getMediaDetail from '@/lib/api/MediaDetail';
 import CreditsListServer from '@/components/creditsList/CreditsListServer';
 import FilmDetail from '@/components/filmDetail/FilmDetail';
 import BackLink from '@/components/UI/BackLink';

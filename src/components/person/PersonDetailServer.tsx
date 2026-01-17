@@ -1,8 +1,8 @@
-import getPerson from '@/app/lib/api/Persons';
+import getPerson from '@/lib/api/Persons';
 import Title from '../UI/Title';
 import Image from 'next/image';
-import decodeHtmlEntities from '@/app/utils/DecodeHtmlEntities';
-import { formatDate, calculateAge } from '@/app/utils/FormatDate';
+import decodeHtmlEntities from '@/utils/DecodeHtmlEntities';
+import { formatDate, calculateAge } from '@/utils/FormatDate';
 import LineTitle from '../UI/LineTitle';
 import PersonCreditsServer from './PersonCreditsServer';
 

@@ -1,5 +1,5 @@
 @use 'mixins' as *;
-@use '../tailwind.css';
+@use '../app/tailwind.css';
 
 .scroll {
     @include scrollbars(8px, rgba(white, 0.2), rgba(white, 0.05));

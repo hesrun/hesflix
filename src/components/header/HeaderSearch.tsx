@@ -1,5 +1,5 @@
 'use client';
-import getSearchResult from '@/app/lib/api/Search';
+import getSearchResult from '@/lib/api/Search';
 import { SearchResponse } from '@/types/Search';
 import { LucideLoaderCircle, LucideSearch } from 'lucide-react';
 import Link from 'next/link';
@@ -51,7 +51,7 @@ export default function HeaderSearch() {
                 name=""
                 id=""
                 placeholder="Search Film, TV, Peoples"
-                className="px-4 py-2 pr-10 w-full border border-amber-500  rounded-full"
+                className="px-4 py-2 pr-10 w-full border border-amber-500"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setSearchTerm(e.target.value)
                 }
@@ -62,44 +62,50 @@ export default function HeaderSearch() {
                 <LucideSearch className="text-amber-500 absolute right-4 top-1/2 transform -translate-y-1/2" />
             )}
             {searchTerm.length > 0 && (
-                <div className="absolute bg-black top-full left-0 w-full mt-1 max-h-80 overflow-y-auto rounded-md border border-amber-500 z-10 scroll-vertical">
-                    {loading ? (
-                        <div className="p-2 text-amber-500 flex items-center justify-center gap-2 py-4">
-                            Loading...
-                            <LucideLoaderCircle className="animate-spin" />
-                        </div>
-                    ) : results && results.results.length > 0 ? (
-                        results.results.map((item) => {
-                            const href =
-                                'media_type' in item
-                                    ? item.media_type === 'person'
-                                        ? `/peoples/${item.id}`
-                                        : `/${item.media_type}/${item.id}`
-                                    : `/movie/${item.id}`;
+                <div className="absolute bg-black top-full left-0 w-full mt-4 border border-amber-500 z-10 p-4 pr-2">
+                    <div className="max-h-80 overflow-y-auto scroll-vertical space-y-2 pr-2">
+                        {loading ? (
+                            <div className="p-2 text-amber-500 flex items-center justify-center gap-2 py-4">
+                                Loading...
+                                <LucideLoaderCircle className="animate-spin" />
+                            </div>
+                        ) : results && results.results.length > 0 ? (
+                            results.results.map((item) => {
+                                const href =
+                                    'media_type' in item
+                                        ? item.media_type === 'person'
+                                            ? `/peoples/${item.id}`
+                                            : `/${item.media_type}/${item.id}`
+                                        : `/movie/${item.id}`;
 
-                            return (
-                                <Link
-                                    onClick={heandleClearSearch}
-                                    href={href}
-                                    key={item.id}
-                                    className="block p-2 border-b border-amber-500 last:border-0 hover:bg-amber-500 hover:text-black"
-                                >
-                                    {'title' in item
-                                        ? item.title
-                                        : 'name' in item
-                                        ? item.name
-                                        : 'Unknown'}{' '}
-                                    {'media_type' in item
-                                        ? `(${item.media_type})`
-                                        : ''}
-                                </Link>
-                            );
-                        })
-                    ) : (
-                        <div className="p-2 text-amber-500 text-center">
-                            No results found
-                        </div>
-                    )}
+                                return (
+                                    <Link
+                                        onClick={heandleClearSearch}
+                                        href={href}
+                                        key={item.id}
+                                        className="flex items-center gap-2 justify-between bg-white/5 rounded-md p-2 border-amber-500 hover:bg-amber-500 hover:text-black transition"
+                                    >
+                                        <span className="font-bold text-sm">
+                                            {'title' in item
+                                                ? item.title
+                                                : 'name' in item
+                                                ? item.name
+                                                : 'Unknown'}
+                                        </span>
+                                        <span className="uppercase font-semibold text-xs opacity-50">
+                                            {'media_type' in item
+                                                ? `${item.media_type}`
+                                                : ''}
+                                        </span>
+                                    </Link>
+                                );
+                            })
+                        ) : (
+                            <div className="p-2 text-amber-500 text-center">
+                                No results found
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
         </div>

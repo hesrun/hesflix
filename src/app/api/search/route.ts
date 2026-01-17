@@ -1,4 +1,4 @@
-import { getSearchResultDirect } from '@/app/lib/api/Search';
+import { getSearchResultDirect } from '@/lib/api/Search';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);

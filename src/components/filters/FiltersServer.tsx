@@ -1,4 +1,4 @@
-import getGenres from '@/app/lib/api/Genres';
+import getGenres from '@/lib/api/Genres';
 import FiltersClient from './FiltersClient';
 
 export default async function FiltersServer({

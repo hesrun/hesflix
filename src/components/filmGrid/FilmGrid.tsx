@@ -1,6 +1,6 @@
 import FilmCard from './FilmCard';
 import { LucideFilm } from 'lucide-react';
-import getMediaList from '@/app/lib/api/MediaList';
+import getMediaList from '@/lib/api/MediaList';
 import Pagination from '../UI/Pagination';
 
 interface PropsParams {

@@ -1,5 +1,5 @@
 import CreditsList from './CreditsList';
-import getMediaCredits from '@/app/lib/api/MediaCredits';
+import getMediaCredits from '@/lib/api/MediaCredits';
 
 interface CreditsListServer {
     id: number;

@@ -1,4 +1,4 @@
-import getPeoples from '@/app/lib/api/Peoples';
+import getPeoples from '@/lib/api/Peoples';
 import PeoplesGrid from './PeoplesGrid';
 import Pagination from '../UI/Pagination';
 interface PeoplesPageProps {
