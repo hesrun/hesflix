@@ -1,5 +1,11 @@
 'use client';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Button from './Button';
+import {
+    LucideAArrowDown,
+    LucideArrowLeft,
+    LucideArrowRight,
+} from 'lucide-react';
 
 interface PaginationProps {
     type: 'movie' | 'tv' | 'people';
@@ -27,23 +33,28 @@ export default function Pagination({
 
     return (
         <div className="flex items-center justify-center mt-4 gap-4">
-            <button
+            <Button
+                size="sm"
+                variant="outline"
+                icon={<LucideArrowLeft size={20} />}
                 disabled={currentPage === 1}
-                className="bg-amber-500 cursor-pointer text-black px-4 py-2 font-medium disabled:opacity-50 disabled:pointer-events-none"
                 onClick={() => goToPage(currentPage - 1)}
             >
                 Prev
-            </button>
+            </Button>
             <span>
                 {currentPage} of {totalPages}
             </span>
-            <button
+            <Button
+                size="sm"
+                variant="outline"
+                icon={<LucideArrowRight size={20} />}
+                iconPosition="right"
                 disabled={currentPage === totalPages}
-                className="bg-amber-500 cursor-pointer text-black px-4 py-2 font-medium disabled:opacity-50 disabled:pointer-events-none"
                 onClick={() => goToPage(currentPage + 1)}
             >
                 Next
-            </button>
+            </Button>
         </div>
     );
 }
