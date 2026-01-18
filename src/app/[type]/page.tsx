@@ -4,6 +4,7 @@ import FiltersServer from '@/components/filters/FiltersServer';
 import Title from '@/components/UI/Title';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
+import FiltersSkeleton from '@/components/filters/FiltersSkeleton';
 
 interface MoviesPageProps {
     params: {
@@ -50,7 +51,10 @@ export default async function MoviesPage({
                 Discover {type === 'movie' ? 'Movies' : 'Tv Shows'}
             </Title>
             <div className="flex gap-4">
-                <FiltersServer type={type} />
+                <Suspense fallback={<FiltersSkeleton />}>
+                    <FiltersServer type={type} />
+                </Suspense>
+
                 <Suspense
                     key={JSON.stringify(paramsSearch)}
                     fallback={<FilmGridLoading />}
