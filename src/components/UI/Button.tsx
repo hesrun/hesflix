@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, ReactNode, forwardRef } from 'react';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     size?: 'sm' | 'md' | 'lg';
-    variant?: 'filled' | 'outline';
+    variant?: 'filled' | 'outline' | 'ghost';
     icon?: ReactNode;
     iconPosition?: 'left' | 'right';
     isLoading?: boolean;
@@ -35,6 +35,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             filled: 'bg-amber-500 border-2 border-amber-500 text-black hover:bg-transparent hover:text-amber-500 disabled:bg-gray-600 disabled:border-gray-600 disabled:text-white',
             outline:
                 'border-2 border-amber-500 bg-transparent text-amber-500 hover:bg-amber-500 hover:text-black disabled:text-gray-600 disabled:border-gray-600',
+            ghost: 'bg-transparent text-amber-500 hover:bg-amber-500 hover:text-black disabled:text-gray-600 disabled:pointer-events-none',
         };
 
         const baseClasses =

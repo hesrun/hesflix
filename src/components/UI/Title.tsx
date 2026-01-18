@@ -11,8 +11,8 @@ export default function Title({
 }: TitleProps) {
     const Tag = type;
     const sizeClasses = {
-        h1: 'text-4xl',
-        h2: 'text-3xl',
+        h1: 'text-3xl md:text-4xl',
+        h2: 'text-3xl md:text-3xl',
         h3: 'text-2xl',
     };
     return (

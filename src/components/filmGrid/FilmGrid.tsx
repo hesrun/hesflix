@@ -28,7 +28,7 @@ export default async function FilmGrid({ type, params }: PropsParams) {
         <>
             {results.length > 0 ? (
                 <div>
-                    <div className="grid grid-cols-4 gap-x-4 gap-y-12">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-12 ">
                         {results.map((item) => (
                             <FilmCard type={type} data={item} key={item.id} />
                         ))}

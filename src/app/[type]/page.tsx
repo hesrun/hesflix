@@ -5,6 +5,7 @@ import Title from '@/components/UI/Title';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import FiltersSkeleton from '@/components/filters/FiltersSkeleton';
+import FiltersToggleBtn from '@/components/filters/FiltersToggleBtn';
 
 interface MoviesPageProps {
     params: {
@@ -47,14 +48,16 @@ export default async function MoviesPage({
 
     return (
         <>
-            <Title type="h1" className="mb-4">
-                Discover {type === 'movie' ? 'Movies' : 'Tv Shows'}
-            </Title>
+            <div className="flex items-center justify-between mb-4">
+                <Title type="h1" className="0">
+                    Discover {type === 'movie' ? 'Movies' : 'Tv Shows'}
+                </Title>
+                <FiltersToggleBtn />
+            </div>
             <div className="flex gap-4">
                 <Suspense fallback={<FiltersSkeleton />}>
                     <FiltersServer type={type} />
                 </Suspense>
-
                 <Suspense
                     key={JSON.stringify(paramsSearch)}
                     fallback={<FilmGridLoading />}

@@ -1,6 +1,7 @@
 'use client';
+import { useUIStore } from '@/store/UIStore';
 import { Genre } from '@/types/common';
-import { LucideCheck } from 'lucide-react';
+import { LucideCheck, LucideX } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -28,12 +29,15 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
+    const filtersIsOpen = useUIStore((state) => state.filtersIsOpen);
+    const toggleFilters = useUIStore((state) => state.toggleFilters);
+
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const [selectedSort, setSelectedSort] = useState<string>();
 
     useEffect(() => {
         setSelectedGenres(
-            (searchParams.get('with_genres')?.split(',') ?? []).filter(Boolean)
+            (searchParams.get('with_genres')?.split(',') ?? []).filter(Boolean),
         );
         setSelectedSort(searchParams.get('sort') ?? 'popularity.desc');
     }, [searchParams]);
@@ -50,6 +54,7 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
     };
 
     const applyFilters = () => {
+        toggleFilters();
         const params = new URLSearchParams(searchParams.toString());
 
         if (selectedGenres.length > 0) {
@@ -85,71 +90,95 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
     };
 
     return (
-        <div className="bg-gradient-to-l from-amber-700 to-amber-300 w-[250px] shrink-0 self-start p-px">
-            <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg">
-                Sorting
-            </div>
-            <div className="p-4 flex flex-col gap-2 bg-black">
-                {sortList.map((item) => (
-                    <label
-                        htmlFor={item.query}
-                        key={item.query}
-                        className="flex items-center gap-2 cursor-pointer hover:text-amber-500"
-                    >
-                        <input
-                            onChange={handleSortChange}
-                            type="radio"
-                            name="sorting"
-                            id={item.query}
-                            checked={selectedSort === item.query}
-                            className="sr-only peer"
-                        />
-                        <div className="w-4 h-4 border border-amber-500 rounded-full flex items-center justify-center">
-                            <div
-                                className={`w-2 h-2 bg-amber-500 rounded-full opacity-0 ${
-                                    selectedSort === item.query && 'opacity-100'
-                                }`}
-                            ></div>
-                        </div>
-                        <span className="text-sm">{item.name}</span>
-                    </label>
-                ))}
-            </div>
-            <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg">
-                Genres
-            </div>
-            <div className="bg-black">
-                {data.map((item) => (
-                    <label
-                        htmlFor={String(item.id)}
-                        key={item.id}
-                        className="px-4 py-2 flex cursor-pointer justify-between items-center has-checked:bg-white/10 has-checked:text-amber-500 group not-last:border-b border-white/10 hover:text-amber-500"
-                    >
-                        <input
-                            onChange={handleGenreChange}
-                            type="checkbox"
-                            name="genres"
-                            id={String(item.id)}
-                            checked={selectedGenres.includes(String(item.id))}
-                            className="sr-only peer"
-                        />
-
-                        <span className="text-sm leading-6">{item.name}</span>
-                        <LucideCheck
-                            strokeWidth={1}
-                            width={20}
-                            className="hidden peer-checked:block"
-                        />
-                    </label>
-                ))}
-            </div>
-            <button
-                disabled={!isFiltersChanged()}
-                onClick={applyFilters}
-                className="bg-amber-500 text-black w-full py-3 font-bold sticky bottom-0 cursor-pointer disabled:hidden disabled:pointer-events-none"
+        <>
+            {filtersIsOpen && (
+                <div
+                    onClick={toggleFilters}
+                    className="fixed inset-0 bg-black/50 z-50 md:hidden"
+                />
+            )}
+            <div
+                className={`fixed -translate-x-full z-50 inset-y-0 left-0 w-[280px] md:w-[250px] md:shrink-0 md:self-start ${filtersIsOpen ? 'translate-x-0' : ''} transition-transform md:relative md:translate-x-0 md:transition-none md:z-0`}
             >
-                Aplly
-            </button>
-        </div>
+                <div className="bg-gradient-to-l from-amber-700 to-amber-300 p-px h-full overflow-y-auto">
+                    <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg flex justify-between items-center">
+                        Sorting
+                        <button
+                            onClick={toggleFilters}
+                            aria-label="close filters"
+                            className="md:hidden"
+                        >
+                            <LucideX />
+                        </button>
+                    </div>
+                    <div className="p-4 flex flex-col gap-2 bg-black">
+                        {sortList.map((item) => (
+                            <label
+                                htmlFor={item.query}
+                                key={item.query}
+                                className="flex items-center gap-2 cursor-pointer hover:text-amber-500"
+                            >
+                                <input
+                                    onChange={handleSortChange}
+                                    type="radio"
+                                    name="sorting"
+                                    id={item.query}
+                                    checked={selectedSort === item.query}
+                                    className="sr-only peer"
+                                />
+                                <div className="w-4 h-4 border border-amber-500 rounded-full flex items-center justify-center">
+                                    <div
+                                        className={`w-2 h-2 bg-amber-500 rounded-full opacity-0 ${
+                                            selectedSort === item.query &&
+                                            'opacity-100'
+                                        }`}
+                                    ></div>
+                                </div>
+                                <span className="text-sm">{item.name}</span>
+                            </label>
+                        ))}
+                    </div>
+                    <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg">
+                        Genres
+                    </div>
+                    <div className="bg-black">
+                        {data.map((item) => (
+                            <label
+                                htmlFor={String(item.id)}
+                                key={item.id}
+                                className="px-4 py-2 flex cursor-pointer justify-between items-center has-checked:bg-white/10 has-checked:text-amber-500 group not-last:border-b border-white/10 hover:text-amber-500"
+                            >
+                                <input
+                                    onChange={handleGenreChange}
+                                    type="checkbox"
+                                    name="genres"
+                                    id={String(item.id)}
+                                    checked={selectedGenres.includes(
+                                        String(item.id),
+                                    )}
+                                    className="sr-only peer"
+                                />
+
+                                <span className="text-sm leading-6">
+                                    {item.name}
+                                </span>
+                                <LucideCheck
+                                    strokeWidth={1}
+                                    width={20}
+                                    className="hidden peer-checked:block"
+                                />
+                            </label>
+                        ))}
+                    </div>
+                    <button
+                        disabled={!isFiltersChanged()}
+                        onClick={applyFilters}
+                        className="bg-amber-500 text-black w-full py-3 font-bold sticky bottom-0 cursor-pointer disabled:hidden disabled:pointer-events-none"
+                    >
+                        Aplly
+                    </button>
+                </div>
+            </div>
+        </>
     );
 }
