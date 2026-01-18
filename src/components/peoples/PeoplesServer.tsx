@@ -1,4 +1,4 @@
-import getPeoples from '@/lib/api/TMDB/Peoples';
+import { tmdb } from '@/lib/api/TMDB';
 import PeoplesGrid from './PeoplesGrid';
 import Pagination from '../UI/Pagination';
 interface PeoplesPageProps {
@@ -12,7 +12,7 @@ export default async function PeoplesServer({
 }: PeoplesPageProps) {
     const params = await searchParams;
     const page = Number(params.page) || 1;
-    const data = await getPeoples(page);
+    const data = await tmdb.person.getPopular(page);
 
     return (
         <div>

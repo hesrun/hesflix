@@ -1,4 +1,4 @@
-import getGenres from '@/lib/api/TMDB/Genres';
+import { tmdb } from '@/lib/api/TMDB';
 import FiltersClient from './FiltersClient';
 
 export default async function FiltersServer({
@@ -6,6 +6,6 @@ export default async function FiltersServer({
 }: {
     type: 'movie' | 'tv';
 }) {
-    const { genres } = await getGenres(type);
+    const { genres } = await tmdb.genres.get(type);
     return <FiltersClient type={type} data={genres} />;
 }

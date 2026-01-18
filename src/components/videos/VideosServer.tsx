@@ -1,4 +1,4 @@
-import getMediaVideos from '@/lib/api/TMDB/MediaVideos';
+import { tmdb } from '@/lib/api/TMDB';
 import VideosGrid from './VideosGrid';
 
 interface VideosServerProps {
@@ -7,7 +7,7 @@ interface VideosServerProps {
 }
 
 export default async function VideosServer({ type, id }: VideosServerProps) {
-    const data = await getMediaVideos(type, id);
+    const data = await tmdb.media.getVideos(type, id);
     return (
         <>
             <VideosGrid videos={data.results} />

@@ -1,4 +1,4 @@
-import getPersonCredits from '@/lib/api/TMDB/PersonCredits';
+import { tmdb } from '@/lib/api/TMDB';
 import LineTitle from '../UI/LineTitle';
 import PersonCreditsList from './PersonCreditsList';
 import Title from '../UI/Title';
@@ -10,7 +10,7 @@ interface PersonCreditsServerProps {
 export default async function PersonCreditsServer({
     personId,
 }: PersonCreditsServerProps) {
-    const { cast } = await getPersonCredits(personId);
+    const { cast } = await tmdb.person.getCredits(personId);
     if (cast.length === 0) {
         return null;
     }

@@ -1,5 +1,5 @@
 import CreditsList from './CreditsList';
-import getMediaCredits from '@/lib/api/TMDB/MediaCredits';
+import { tmdb } from '@/lib/api/TMDB';
 
 interface CreditsListServer {
     id: number;
@@ -10,7 +10,7 @@ export default async function CreditsListServer({
     id,
     type,
 }: CreditsListServer) {
-    const { cast: mediaCredits } = await getMediaCredits(type, id);
+    const { cast: mediaCredits } = await tmdb.media.getCredits(type, id);
     return (
         <>
             <CreditsList data={mediaCredits} />

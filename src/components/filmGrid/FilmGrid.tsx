@@ -1,6 +1,6 @@
 import FilmCard from './FilmCard';
 import { LucideFilm } from 'lucide-react';
-import getMediaList from '@/lib/api/TMDB/MediaList';
+import { tmdb } from '@/lib/api/TMDB';
 import Pagination from '../UI/Pagination';
 
 interface PropsParams {
@@ -17,7 +17,7 @@ export default async function FilmGrid({ type, params }: PropsParams) {
     const sort = (params.sort as string) || 'popularity.desc';
     const genres = (params.with_genres as string) || '';
 
-    const { results, total_pages } = await getMediaList(
+    const { results, total_pages } = await tmdb.media.getList(
         type,
         page,
         sort,

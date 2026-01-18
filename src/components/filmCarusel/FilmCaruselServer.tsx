@@ -1,5 +1,5 @@
 import FilmCaruselClient from './FilmCaruselClient';
-import getMediaList from '@/lib/api/TMDB/MediaList';
+import { tmdb } from '@/lib/api/TMDB';
 
 export default async function FilmCaruselServer({
     type,
@@ -8,8 +8,8 @@ export default async function FilmCaruselServer({
 }) {
     const { results } =
         type === 'movie'
-            ? await getMediaList('movie')
-            : await getMediaList('tv');
+            ? await tmdb.media.getList('movie')
+            : await tmdb.media.getList('tv');
 
     return (
         <>

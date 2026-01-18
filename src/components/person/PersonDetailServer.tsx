@@ -1,4 +1,4 @@
-import getPerson from '@/lib/api/TMDB/Persons';
+import { tmdb } from '@/lib/api/TMDB';
 import Title from '../UI/Title';
 import Image from 'next/image';
 import decodeHtmlEntities from '@/utils/DecodeHtmlEntities';
@@ -12,7 +12,7 @@ export default async function PersonDetailServer({
     params: { id: string };
 }) {
     const personParams = await params;
-    const person = await getPerson(Number(personParams.id));
+    const person = await tmdb.person.getDetail(Number(personParams.id));
 
     return (
         <>

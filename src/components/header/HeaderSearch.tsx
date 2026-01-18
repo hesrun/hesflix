@@ -1,5 +1,5 @@
 'use client';
-import getSearchResult from '@/lib/api/TMDB/Search';
+import { tmdb } from '@/lib/api/TMDB';
 import { SearchResponse } from '@/types/Search';
 import {
     LucideCroissant,
@@ -51,7 +51,7 @@ export default function HeaderSearch() {
             setLoading(true);
             setResults(null);
             try {
-                const response = await getSearchResult(debouncedTerm);
+                const response = await tmdb.search.multi(debouncedTerm);
                 setResults(response);
             } catch (error) {
                 console.error('Error fetching search results:', error);

@@ -1,4 +1,4 @@
-import getMediaDetail from '@/lib/api/TMDB/MediaDetail';
+import { tmdb } from '@/lib/api/TMDB';
 import CreditsListServer from '@/components/creditsList/CreditsListServer';
 import FilmDetail from '@/components/filmDetail/FilmDetail';
 import BackLink from '@/components/UI/BackLink';
@@ -22,7 +22,7 @@ export async function generateMetadata({
     params,
 }: MediaDetailProps): Promise<Metadata> {
     const { id, type } = await params;
-    const data = await getMediaDetail(type, id);
+    const data = await tmdb.media.getDetail(type, id);
     const metaTitle =
         type === 'movie' ? (data as Movie).title : (data as TV).name;
     const metaDescription = data.overview;
@@ -49,7 +49,7 @@ export async function generateMetadata({
 
 export default async function MoviePage({ params }: MediaDetailProps) {
     const { id, type } = await params;
-    const mediaData = await getMediaDetail(type, id);
+    const mediaData = await tmdb.media.getDetail(type, id);
     return (
         <>
             <BackLink label="Back" />

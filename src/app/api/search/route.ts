@@ -1,4 +1,4 @@
-import { getSearchResultDirect } from '@/lib/api/TMDB/Search';
+import { tmdb } from '@/lib/api/TMDB';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     }
 
     try {
-        const data = await getSearchResultDirect(query);
+        const data = await tmdb.search.direct(query);
         return Response.json(data);
     } catch (error) {
         console.error('Search API error:', error);

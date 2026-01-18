@@ -1,6 +1,6 @@
 import PersonDetailServer from '@/components/person/PersonDetailServer';
 import Title from '@/components/UI/Title';
-import getPerson from '@/lib/api/TMDB/Persons';
+import { tmdb } from '@/lib/api/TMDB';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import BackLink from '@/components/UI/BackLink';
@@ -17,7 +17,7 @@ export async function generateMetadata({
     params,
 }: PersonDetailsProps): Promise<Metadata> {
     const { id } = await params;
-    const person = await getPerson(Number(id));
+    const person = await tmdb.person.getDetail(Number(id));
     const metaTitle = person.name;
     const metaDescription =
         person.biography || `${person.name} - Actor / Actress profile`;
