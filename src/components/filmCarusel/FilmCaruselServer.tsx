@@ -1,5 +1,5 @@
 import FilmCaruselClient from './FilmCaruselClient';
-import getMediaList from '@/lib/api/MediaList';
+import getMediaList from '@/lib/api/TMDB/MediaList';
 
 export default async function FilmCaruselServer({
     type,

@@ -18,7 +18,7 @@ export default function FilmCaruselCard({ type, data }: PropsParams) {
     const path = type === 'movie' ? 'movie' : 'tv';
     return (
         <Link href={`${path}/${data.id}`} key={data.id} className="group">
-            <div className="overflow-hidden relative">
+            <div className="overflow-hidden relative rounded-md">
                 {data.poster_path ? (
                     <Image
                         src={`https://image.tmdb.org/t/p/w500/${data.poster_path}`}
@@ -28,7 +28,7 @@ export default function FilmCaruselCard({ type, data }: PropsParams) {
                         className="group-hover:scale-110 transition-all"
                     />
                 ) : (
-                    <div className="uppercase aspect-[1/1.5] flex justify-center items-center flex-col gap-2 bg-amber-500 font-medium">
+                    <div className="uppercase aspect-[1/1.5] flex justify-center items-center flex-col gap-2 bg-amber-500 font-medium ">
                         <LucideFilm size={32} />
                         no photo
                     </div>

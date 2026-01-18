@@ -1,4 +1,4 @@
-import { getSearchResultDirect } from '@/lib/api/Search';
+import { getSearchResultDirect } from '@/lib/api/TMDB/Search';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -7,7 +7,7 @@ export async function GET(request: Request) {
     if (!query) {
         return Response.json(
             { error: 'Query parameter is required' },
-            { status: 400 }
+            { status: 400 },
         );
     }
 
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
         console.error('Search API error:', error);
         return Response.json(
             { error: 'Failed to fetch search results' },
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

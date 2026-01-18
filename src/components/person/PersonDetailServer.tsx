@@ -1,4 +1,4 @@
-import getPerson from '@/lib/api/Persons';
+import getPerson from '@/lib/api/TMDB/Persons';
 import Title from '../UI/Title';
 import Image from 'next/image';
 import decodeHtmlEntities from '@/utils/DecodeHtmlEntities';

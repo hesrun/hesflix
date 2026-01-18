@@ -1,4 +1,4 @@
-import getPersonCredits from '@/lib/api/PersonCredits';
+import getPersonCredits from '@/lib/api/TMDB/PersonCredits';
 import LineTitle from '../UI/LineTitle';
 import PersonCreditsList from './PersonCreditsList';
 import Title from '../UI/Title';

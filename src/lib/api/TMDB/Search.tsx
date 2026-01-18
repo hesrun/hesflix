@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/constants/urls';
-import { fetchFromTMDB } from '../fetcher';
+import { fetchFromTMDB } from './fetcher';
 import { SearchResponse } from '@/types/Search';
 
 export function getSearchResultDirect(query: string) {

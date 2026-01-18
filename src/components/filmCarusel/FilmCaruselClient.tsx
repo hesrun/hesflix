@@ -31,7 +31,7 @@ export default function FilmCaruselClient({ type, data }: PropsParams) {
                 <div className="flex -mx-2">
                     {data.map((item) => (
                         <div
-                            className="embla__slide w-1/6 shrink-0 px-2"
+                            className="embla__slide w-60 md:w-1/3 lg:w-1/4 xl:w-1/6 shrink-0 px-2"
                             key={item.id}
                         >
                             <FilmCaruselCard type={type} data={item} />
@@ -65,7 +65,7 @@ type UsePrevNextButtonsType = {
 };
 
 export const usePrevNextButtons = (
-    emblaApi: EmblaCarouselType | undefined
+    emblaApi: EmblaCarouselType | undefined,
 ): UsePrevNextButtonsType => {
     const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
     const [nextBtnDisabled, setNextBtnDisabled] = useState(true);

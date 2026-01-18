@@ -1,4 +1,4 @@
-import getPeoples from '@/lib/api/Peoples';
+import getPeoples from '@/lib/api/TMDB/Peoples';
 import PeoplesGrid from './PeoplesGrid';
 import Pagination from '../UI/Pagination';
 interface PeoplesPageProps {

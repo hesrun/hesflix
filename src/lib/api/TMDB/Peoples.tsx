@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/constants/urls';
-import { fetchFromTMDB } from '../fetcher';
+import { fetchFromTMDB } from './fetcher';
 import { PeopleSearchResponse } from '@/types/people';
 
 export default function getPeoples(page = 1): Promise<PeopleSearchResponse> {

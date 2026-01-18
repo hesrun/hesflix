@@ -1,6 +1,6 @@
 import PersonDetailServer from '@/components/person/PersonDetailServer';
 import Title from '@/components/UI/Title';
-import getPerson from '@/lib/api/Persons';
+import getPerson from '@/lib/api/TMDB/Persons';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import BackLink from '@/components/UI/BackLink';

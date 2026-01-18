@@ -1,4 +1,4 @@
-import getMediaVideos from '@/lib/api/MediaVideos';
+import getMediaVideos from '@/lib/api/TMDB/MediaVideos';
 import VideosGrid from './VideosGrid';
 
 interface VideosServerProps {
