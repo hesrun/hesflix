@@ -13,10 +13,10 @@ export default function Header() {
 
     return (
         <header className="border-b border-white/10 sticky top-0 bg-black z-50">
-            <div className="container px-4 mx-auto flex items-center py-4 relative">
+            <div className="container px-4 mx-auto flex items-center py-4 relative gap-4">
                 <button
                     aria-label="toggle menu"
-                    className="w-6 h-6 flex md:hidden flex-col justify-center items-center gap-[6px] mr-4 group shrink-0 cursor-pointer"
+                    className="w-6 h-6 flex md:hidden flex-col justify-center items-center gap-[6px] group shrink-0 cursor-pointer"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                     <span

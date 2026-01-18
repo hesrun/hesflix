@@ -85,7 +85,7 @@ export default function HeaderSearch() {
         <div className="flex items-center grow justify-end" ref={searchRef}>
             {isOpen && (
                 <div
-                    className={`absolute left-4 z-10 right-12 md:relative transition-all duration-300 grow max-w-[800px]`}
+                    className={`absolute left-4 z-10 right-12 md:relative md:left-0 md:right-0 transition-all duration-300 grow max-w-[800px] `}
                 >
                     <input
                         value={searchTerm}
