@@ -1,6 +1,6 @@
 import { tmdb } from '@/lib/api/TMDB';
 import CreditsListServer from '@/components/creditsList/CreditsListServer';
-import FilmDetail from '@/components/filmDetail/FilmDetail';
+import FilmDetail from '@/components/filmDetail/FilmDetailClient';
 import BackLink from '@/components/UI/BackLink';
 import Title from '@/components/UI/Title';
 import VideosGridSkeleton from '@/components/videos/VideosGridSkeleton';
@@ -10,6 +10,8 @@ import { TV } from '@/types/tv';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import CreditsListSkeleton from '@/components/creditsList/CreditsListSkeleton';
+import FilmDetailSkeleton from '@/components/filmDetail/FilmDetailSkeleton';
+import FilmDetailServer from '@/components/filmDetail/FilmDetailServer';
 
 interface MediaDetailProps {
     params: {
@@ -49,11 +51,12 @@ export async function generateMetadata({
 
 export default async function MoviePage({ params }: MediaDetailProps) {
     const { id, type } = await params;
-    const mediaData = await tmdb.media.getDetail(type, id);
     return (
         <>
             <BackLink label="Back" />
-            <FilmDetail data={mediaData} type={type} />
+            <Suspense fallback={<FilmDetailSkeleton />}>
+                <FilmDetailServer id={id} type={type} />
+            </Suspense>
             <Title type="h2" className="mb-6">
                 Credits
             </Title>

@@ -6,13 +6,14 @@ import LineTitle from '../UI/LineTitle';
 import decodeHtmlEntities from '@/utils/DecodeHtmlEntities';
 import Title from '../UI/Title';
 import Link from 'next/link';
+import NoPoster from '../UI/Caps/NoPoster';
 
 interface mediaDetailProps {
     data: Movie | TV;
     type: 'movie' | 'tv';
 }
 
-export default function FilmDetail({ data, type }: mediaDetailProps) {
+export default function FilmDetailClient({ data, type }: mediaDetailProps) {
     const media = {
         title: type === 'movie' ? (data as Movie).title : (data as TV).name,
         date:
@@ -24,42 +25,53 @@ export default function FilmDetail({ data, type }: mediaDetailProps) {
     };
     return (
         <>
-            <div className="flex gap-12 mb-12">
-                <div className="shrink-0">
-                    <Image
-                        src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
-                        width={400}
-                        height={500}
-                        alt={media.title}
-                    />
+            <div className="flex flex-col gap-4 mb-8 md:grid md:grid-rows-[auto_1fr] md:grid-cols-12 md:gap-x-8">
+                <div className="flex items-baseline gap-4 justify-between gap-2 md:col-start-5 md:col-end-13 md:row-start-1">
+                    <Title type="h1">{media.title}</Title>
+                    <span className="text-white/50 text-xl md:text-3xl">{`(${
+                        media.date.split('-')[0]
+                    })`}</span>
                 </div>
-                <div className="flex flex-col gap-6">
-                    <div>
-                        <div className="flex items-baseline gap-4">
-                            <Title type="h1">{media.title}</Title>
-                            <span className="text-white/50 text-3xl">{`(${
-                                media.date.split('-')[0]
-                            })`}</span>
+                <div className="shrink-0 rounded-lg overflow-hidden md:col-start-1 md:col-end-5 md:row-start-1 md:row-end-3">
+                    {data.poster_path ? (
+                        <div className="bg-white/10 rounded-lg">
+                            <Image
+                                className="w-full rounded-lg"
+                                src={`https://image.tmdb.org/t/p/w780/${data.poster_path}`}
+                                width={400}
+                                height={600}
+                                alt={media.title}
+                            />
                         </div>
-                        {media.tagline && (
-                            <div className="flex gap-1 text-xl text-gray-600">
-                                <span>❝</span>
-                                <span className="font-semibold">
-                                    {media.tagline}
-                                </span>
-                                <span>❞</span>
-                            </div>
-                        )}
-                    </div>
-                    <div className="flex items-center gap-4  my-4">
-                        <CircleProgress vote={data.vote_average} size="large" />
-                        <div className="uppercase flex text-sm gap-2">
-                            <span className="text-amber-500 font-bold">
-                                {data.vote_count}
+                    ) : (
+                        <NoPoster />
+                    )}
+                </div>
+                <div className="flex flex-col gap-6 md:col-start-5 md:col-end-13 md:row-start-2">
+                    {media.tagline && (
+                        <div className="flex gap-1 text-xl text-gray-600">
+                            <span>❝</span>
+                            <span className="font-semibold">
+                                {media.tagline}
                             </span>
-                            <span>votes</span>
+                            <span>❞</span>
                         </div>
-                    </div>
+                    )}
+                    {data.vote_average > 0 && (
+                        <div className="flex items-center gap-4  my-4">
+                            <CircleProgress
+                                vote={data.vote_average}
+                                size="large"
+                            />
+                            <div className="uppercase flex text-sm gap-2">
+                                <span className="text-amber-500 font-bold">
+                                    {data.vote_count}
+                                </span>
+                                <span>votes</span>
+                            </div>
+                        </div>
+                    )}
+
                     <div>
                         <LineTitle type="h3">Overview</LineTitle>
                         <div>{decodeHtmlEntities(data.overview)}</div>

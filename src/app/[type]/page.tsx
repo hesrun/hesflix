@@ -52,7 +52,9 @@ export default async function MoviesPage({
                 <Title type="h1" className="0">
                     Discover {type === 'movie' ? 'Movies' : 'Tv Shows'}
                 </Title>
-                <FiltersToggleBtn />
+                <div className="md:hidden">
+                    <FiltersToggleBtn />
+                </div>
             </div>
             <div className="flex gap-4">
                 <Suspense fallback={<FiltersSkeleton />}>
