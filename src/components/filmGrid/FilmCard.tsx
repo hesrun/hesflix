@@ -4,6 +4,7 @@ import { LucideFilm } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import CircleProgress from '../UI/CircleProgress';
+import NoPoster from '../UI/Caps/NoPoster';
 
 interface PropsParams {
     type: 'movie' | 'tv';
@@ -19,7 +20,7 @@ export default function FilmCard({ type, data }: PropsParams) {
     return (
         <>
             <Link href={`/${path}/${data.id}`} key={data.id} className="group">
-                <div className="overflow-hidden relative">
+                <div className="overflow-hidden relative rounded-md">
                     {data.poster_path ? (
                         <Image
                             src={`https://image.tmdb.org/t/p/w500/${data.poster_path}`}
@@ -29,14 +30,13 @@ export default function FilmCard({ type, data }: PropsParams) {
                             className="group-hover:scale-110 transition-all"
                         />
                     ) : (
-                        <div className="uppercase aspect-[1/1.5] flex justify-center items-center flex-col gap-2 bg-amber-500 font-medium">
-                            <LucideFilm size={32} />
-                            no photo
+                        <NoPoster />
+                    )}
+                    {data.vote_average > 0 && (
+                        <div className="absolute top-2 right-2">
+                            <CircleProgress vote={data.vote_average} />
                         </div>
                     )}
-                    <div className="absolute top-2 right-2">
-                        <CircleProgress vote={data.vote_average} />
-                    </div>
                 </div>
 
                 <div className="py-4 flex items-baseline justify-between">

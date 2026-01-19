@@ -5,7 +5,8 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import BackLink from '@/components/UI/BackLink';
 import PersonCreditsServer from '@/components/person/PersonCreditsServer';
-import PersonCreditsSkeletonGrid from '@/components/person/PersonCreditsSkeletonGrid';
+import PersonCreditsSkeleton from '@/components/person/PersonCreditsSkeleton';
+import PersonDetailSkeleton from '@/components/person/PersonDetailSkeleton';
 
 interface PersonDetailsProps {
     params: {
@@ -47,15 +48,13 @@ export default async function PersonDetails({ params }: PersonDetailsProps) {
     return (
         <>
             <BackLink label="Back" />
-            <Suspense
-                fallback={<Title type="h1">Loading Person Details...</Title>}
-            >
+            <Suspense fallback={<PersonDetailSkeleton />}>
                 <PersonDetailServer params={{ id }} />
             </Suspense>
             <Title type="h2" className="mb-6">
                 Filmography
             </Title>
-            <Suspense fallback={<PersonCreditsSkeletonGrid />}>
+            <Suspense fallback={<PersonCreditsSkeleton />}>
                 <PersonCreditsServer personId={Number(id)} />
             </Suspense>
         </>
