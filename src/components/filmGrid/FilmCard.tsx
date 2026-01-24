@@ -60,9 +60,9 @@ export default function FilmCard({
                     ) : null}
                 </div>
                 <div className="p-2 gap-2 xl:p-4 flex items-baseline justify-between">
-                    <h2 className="font-medium text-amber-500 text-sm xl:text-base leading-snug">
+                    <h3 className="font-medium text-amber-500 text-sm xl:text-base leading-snug">
                         {title}
-                    </h2>
+                    </h3>
                     <span className="text-sm opacity-50">
                         {releaseDate && releaseDate.split('-')[0]}
                     </span>

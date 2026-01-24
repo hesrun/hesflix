@@ -80,7 +80,7 @@ export default function FavoriteButton({
             onClick={handleToggleFavorite}
             disabled={isLoading}
             className={`
-                w-10 h-10 rounded-full transition-all duration-200 flex items-center justify-center
+                w-10 h-10 rounded-full transition-all duration-200 flex items-center justify-center cursor-pointer
                 ${
                     isFavorite
                         ? 'bg-red-500 text-white hover:bg-red-600'

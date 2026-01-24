@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { LucideUser, LucideLogOut, LucideHeart } from 'lucide-react';
 import { useState } from 'react';
+import Button from '../UI/Button';
 
 export default function UserMenu() {
     const { user, isAuthenticated, logout, isLoading } = useAuth();
@@ -18,18 +19,12 @@ export default function UserMenu() {
     if (!isAuthenticated || !user) {
         return (
             <div className="flex items-center gap-2">
-                <Link
-                    href="/signin"
-                    className="px-4 py-2 text-sm text-gray-300 hover:text-white transition"
-                >
+                <Button size="sm" variant="ghost" href="/signin">
                     Login
-                </Link>
-                <Link
-                    href="/signup"
-                    className="px-4 py-2 text-sm bg-amber-500 text-black rounded-lg hover:bg-amber-600 transition font-medium"
-                >
+                </Button>
+                <Button size="sm" href="/signup">
                     Sign Up
-                </Link>
+                </Button>
             </div>
         );
     }

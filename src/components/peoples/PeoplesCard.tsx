@@ -10,7 +10,7 @@ export default function PeoplesCard({ person }: PeoplesCardProps) {
     return (
         <Link
             href={`/peoples/${person.id}`}
-            className="cursor-pointer mb-2 overflow-hidden group"
+            className="cursor-pointer group bg-gray-900 border-1 border-gray-800 rounded-md overflow-hidden"
         >
             <div className="overflow-hidden">
                 <Image
@@ -27,12 +27,16 @@ export default function PeoplesCard({ person }: PeoplesCardProps) {
                     }`}
                 />
             </div>
-            <div className="py-2">
-                <h3 className="font-semibold text-amber-500">{person.name}</h3>
-                <p className="text-xs text-gray-500">
+            <div className="p-2 gap-2 xl:p-4 space-y-1">
+                <h3 className="font-medium text-amber-500 text-sm xl:text-base leading-snug">
+                    {person.name}
+                </h3>
+                <p className="text-sm opacity-50">
                     {person.known_for
                         .map((work) =>
-                            work.media_type === 'movie' ? work.title : work.name
+                            work.media_type === 'movie'
+                                ? work.title
+                                : work.name,
                         )
                         .join(', ')}
                 </p>
