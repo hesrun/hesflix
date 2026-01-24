@@ -2,6 +2,8 @@ import FilmCard from './FilmCard';
 import { LucideFilm } from 'lucide-react';
 import { tmdb } from '@/lib/api/TMDB';
 import Pagination from '../UI/Pagination';
+import { Movie } from '@/types/movie';
+import { TV } from '@/types/tv';
 
 interface PropsParams {
     type: 'movie' | 'tv';
@@ -29,9 +31,26 @@ export default async function FilmGrid({ type, params }: PropsParams) {
             {results.length > 0 ? (
                 <div>
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-12 ">
-                        {results.map((item) => (
-                            <FilmCard type={type} data={item} key={item.id} />
-                        ))}
+                        {results.map((item) => {
+                            const filmCardProps = {
+                                mediaType: type,
+                                movieId: item.id,
+                                title:
+                                    type === 'movie'
+                                        ? (item as Movie).title
+                                        : (item as TV).name,
+                                posterPath: item.poster_path,
+                                rating: item.vote_average,
+                                releaseDate:
+                                    type === 'movie'
+                                        ? (item as Movie).release_date
+                                        : (item as TV).first_air_date,
+                            };
+
+                            return (
+                                <FilmCard key={item.id} data={filmCardProps} />
+                            );
+                        })}
                     </div>
                     <Pagination
                         type={type}

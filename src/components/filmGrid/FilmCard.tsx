@@ -1,29 +1,40 @@
-import { Movie } from '@/types/movie';
-import { TV } from '@/types/tv';
-import { LucideFilm } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import CircleProgress from '../UI/CircleProgress';
 import NoPoster from '../UI/Caps/NoPoster';
+import RemoveFavoriteButton from '../favorites/RemoveFavoriteButton';
+import FavoriteButton from '../favorites/FavoriteButton';
 
-interface PropsParams {
-    type: 'movie' | 'tv';
-    data: TV | Movie;
+interface FilmCardProps {
+    data: {
+        movieId: number;
+        title: string;
+        posterPath: string | null;
+        mediaType: 'movie' | 'tv';
+        rating?: number;
+        releaseDate?: string;
+        $id?: string;
+    };
+    removeFavorite?: boolean;
+    setFavorites?: React.Dispatch<React.SetStateAction<any[]>>;
 }
-export default function FilmCard({ type, data }: PropsParams) {
-    const title = type === 'movie' ? (data as Movie).title : (data as TV).name;
-    const date =
-        type === 'movie'
-            ? (data as Movie).release_date
-            : (data as TV).first_air_date;
-    const path = type === 'movie' ? 'movie' : 'tv';
+export default function FilmCard({
+    data,
+    removeFavorite = false,
+    setFavorites,
+}: FilmCardProps) {
+    const { movieId, title, posterPath, mediaType, rating, releaseDate } = data;
     return (
         <>
-            <Link href={`/${path}/${data.id}`} key={data.id} className="group">
-                <div className="overflow-hidden relative rounded-md">
-                    {data.poster_path ? (
+            <Link
+                href={`/${mediaType}/${movieId}`}
+                key={movieId}
+                className="group bg-gray-900 border-1 border-gray-800 rounded-md overflow-hidden"
+            >
+                <div className="overflow-hidden relative">
+                    {posterPath ? (
                         <Image
-                            src={`https://image.tmdb.org/t/p/w500/${data.poster_path}`}
+                            src={`https://image.tmdb.org/t/p/w500/${posterPath}`}
                             width={350}
                             height={500}
                             alt={title}
@@ -32,16 +43,29 @@ export default function FilmCard({ type, data }: PropsParams) {
                     ) : (
                         <NoPoster />
                     )}
-                    {data.vote_average > 0 && (
+                    {rating && rating > 0 && (
                         <div className="absolute top-2 right-2">
-                            <CircleProgress vote={data.vote_average} />
+                            <CircleProgress vote={rating} />
                         </div>
                     )}
+                    {removeFavorite && setFavorites ? (
+                        <RemoveFavoriteButton
+                            id={data.$id}
+                            setFavorites={setFavorites}
+                        />
+                    ) : !removeFavorite ? (
+                        <div className="absolute top-2 left-2">
+                            <FavoriteButton {...data} />
+                        </div>
+                    ) : null}
                 </div>
-
-                <div className="py-4 flex items-baseline justify-between">
-                    <h2 className="font-medium">{title}</h2>
-                    <span>{date && date.split('-')[0]}</span>
+                <div className="p-2 gap-2 xl:p-4 flex items-baseline justify-between">
+                    <h2 className="font-medium text-amber-500 text-sm xl:text-base leading-snug">
+                        {title}
+                    </h2>
+                    <span className="text-sm opacity-50">
+                        {releaseDate && releaseDate.split('-')[0]}
+                    </span>
                 </div>
             </Link>
         </>
