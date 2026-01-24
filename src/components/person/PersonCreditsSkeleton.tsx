@@ -8,6 +8,7 @@ export default function PersonCreditsSkeleton() {
                 .fill('')
                 .map((_, index) => (
                     <SkeletonTheme
+                        key={index}
                         baseColor="#111"
                         highlightColor="rgba(255,255,255,.05)"
                     >

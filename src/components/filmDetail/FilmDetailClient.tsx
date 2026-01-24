@@ -7,6 +7,7 @@ import decodeHtmlEntities from '@/utils/DecodeHtmlEntities';
 import Title from '../UI/Title';
 import Link from 'next/link';
 import NoPoster from '../UI/Caps/NoPoster';
+import FavoriteButton from '../favorites/FavoriteButton';
 
 interface mediaDetailProps {
     data: Movie | TV;
@@ -22,6 +23,14 @@ export default function FilmDetailClient({ data, type }: mediaDetailProps) {
                 : (data as TV).first_air_date,
         tagline: type === 'tv' ? (data as TV).tagline : undefined,
         seasons: type === 'tv' ? (data as TV).seasons : null,
+    };
+    const favoriteData = {
+        movieId: data.id,
+        title: media.title,
+        posterPath: data.poster_path,
+        mediaType: type,
+        rating: data.vote_average,
+        releaseDate: media.date,
     };
     return (
         <>
@@ -71,7 +80,9 @@ export default function FilmDetailClient({ data, type }: mediaDetailProps) {
                             </div>
                         </div>
                     )}
-
+                    <div>
+                        <FavoriteButton {...favoriteData} />
+                    </div>
                     <div>
                         <LineTitle type="h3">Overview</LineTitle>
                         <div>{decodeHtmlEntities(data.overview)}</div>

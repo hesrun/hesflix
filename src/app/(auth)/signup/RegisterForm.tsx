@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import Input from '@/components/UI/Input';
 import Button from '@/components/UI/Button';
 import Link from 'next/link';
@@ -18,6 +20,14 @@ export default function RegisterForm() {
         password?: string;
         confirmPassword?: string;
     }>({});
+    const { register, isAuthenticated, isLoading: authLoading } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!authLoading && isAuthenticated) {
+            router.push('/');
+        }
+    }, [isAuthenticated, authLoading, router]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -30,8 +40,8 @@ export default function RegisterForm() {
             newErrors.confirmPassword = 'Passwords do not match';
         }
 
-        if (password.length < 6) {
-            newErrors.password = 'Password must be at least 6 characters';
+        if (password.length < 8) {
+            newErrors.password = 'Password must be at least 8 characters';
         }
 
         if (Object.keys(newErrors).length > 0) {
@@ -41,11 +51,21 @@ export default function RegisterForm() {
 
         setIsLoading(true);
 
-        // TODO: Implement actual registration logic
-        setTimeout(() => {
-            console.log('Register:', { name, email, password });
+        try {
+            await register({ email, password, name });
+            router.push('/');
+        } catch (err: any) {
+            console.error('Registration error:', err);
+            if (err?.code === 409) {
+                setErrors({ email: 'User with this email already exists' });
+            } else {
+                const errorMessage =
+                    err?.message || 'Registration failed. Please try again.';
+                setErrors({ email: errorMessage });
+            }
+        } finally {
             setIsLoading(false);
-        }, 2000);
+        }
     };
 
     return (

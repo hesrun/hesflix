@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import '@/scss/global.scss';
 import Header from '@/components/header/Header';
 import VideoModal from '@/components/UI/VideoModal';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { Toaster } from 'sonner';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -30,9 +32,14 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
             >
-                <Header />
-                <main className="py-8 container mx-auto px-4">{children}</main>
-                <VideoModal />
+                <AuthProvider>
+                    <Header />
+                    <main className="py-8 container mx-auto px-4">
+                        {children}
+                    </main>
+                    <VideoModal />
+                    <Toaster position="bottom-right" theme="dark" richColors />
+                </AuthProvider>
             </body>
         </html>
     );

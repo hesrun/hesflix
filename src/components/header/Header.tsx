@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import HeaderNav from './HeaderNav';
 import HeaderSearch from './HeaderSearch';
+import UserMenu from './UserMenu';
 import { useState } from 'react';
 
 export default function Header() {
@@ -43,6 +44,7 @@ export default function Header() {
                     onClick={handleCloseHeaderMenu}
                 />
                 <HeaderSearch />
+                <UserMenu />
             </div>
         </header>
     );

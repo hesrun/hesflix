@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import Input from '@/components/UI/Input';
 import Button from '@/components/UI/Button';
 import Link from 'next/link';
@@ -11,17 +13,33 @@ export default function LoginForm() {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const { login, isAuthenticated, isLoading: authLoading } = useAuth();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get('redirect') || '/';
+
+    useEffect(() => {
+        if (!authLoading && isAuthenticated) {
+            router.push(redirect);
+        }
+    }, [isAuthenticated, authLoading, router, redirect]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
 
-        // TODO: Implement actual login logic
-        setTimeout(() => {
-            console.log('Login:', { email, password });
+        try {
+            await login({ email, password });
+            router.push(redirect);
+        } catch (err: any) {
+            console.error('Login error:', err);
+            const errorMessage =
+                err?.message || 'Invalid email or password. Please try again.';
+            setError(errorMessage);
+        } finally {
             setIsLoading(false);
-        }, 2000);
+        }
     };
 
     return (
