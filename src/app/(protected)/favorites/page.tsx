@@ -1,34 +1,52 @@
 'use client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useMemo } from 'react';
 import { useFavoritesStore } from '@/store/favoritesStore';
 import Link from 'next/link';
 import Title from '@/components/UI/Title';
-import FilmCard from '@/components/filmGrid/FilmCard';
+import FavoritesGrid from '@/components/favorites/FavoritesGrid';
+
+function FavoritesSkeleton({ title }: { title: string }) {
+    return (
+        <>
+            <Title>{title}</Title>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8">
+                {[...Array(12)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="aspect-[2/3] bg-gray-800 rounded-lg animate-pulse"
+                    />
+                ))}
+            </div>
+        </>
+    );
+}
 
 export default function FavoritesPage() {
-    const { isAuthenticated } = useAuth();
     const { favorites, isLoading } = useFavoritesStore();
+
+    const { favoritesFilms, favoritesTVShows } = useMemo(() => {
+        return {
+            favoritesFilms: favorites.filter(
+                (item) => item.mediaType === 'movie',
+            ),
+            favoritesTVShows: favorites.filter(
+                (item) => item.mediaType === 'tv',
+            ),
+        };
+    }, [favorites]);
 
     if (isLoading) {
         return (
             <div className="container mx-auto px-4 py-8">
-                <Title>My Favorites</Title>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8">
-                    {[...Array(12)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="aspect-[2/3] bg-gray-800 rounded-lg animate-pulse"
-                        ></div>
-                    ))}
-                </div>
+                <FavoritesSkeleton title="Favorite Films" />
+                <FavoritesSkeleton title="Favorite TV Shows" />
             </div>
         );
     }
 
     return (
         <>
-            <Title>My Favorites</Title>
-            {favorites.length === 0 ? (
+            {favorites.length === 0 && (
                 <div className="text-center py-16">
                     <p className="text-gray-400 text-lg mb-4">
                         You haven&apos;t added any favorites yet
@@ -40,27 +58,20 @@ export default function FavoritesPage() {
                         Browse Movies & TV Shows
                     </Link>
                 </div>
-            ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-8">
-                    {favorites.map((item) => {
-                        const filmCardData = {
-                            movieId: item.movieId,
-                            title: item.title,
-                            posterPath: item.posterPath,
-                            mediaType: item.mediaType,
-                            rating: item.rating,
-                            releaseDate: item.releaseDate,
-                            $id: item.$id,
-                        };
-                        return (
-                            <FilmCard
-                                key={item.$id}
-                                data={filmCardData}
-                                removeFavorite={true}
-                            />
-                        );
-                    })}
-                </div>
+            )}
+            {favoritesFilms.length > 0 && (
+                <>
+                    <Title className="mb-4 md:mb-6">Favorite Films</Title>
+                    <FavoritesGrid data={favoritesFilms} />
+                </>
+            )}
+            {favoritesTVShows.length > 0 && (
+                <>
+                    <Title className="mb-4 md:mb-6 mt-6 md:mt-8">
+                        Favorite TV Shows
+                    </Title>
+                    <FavoritesGrid data={favoritesTVShows} />
+                </>
             )}
         </>
     );

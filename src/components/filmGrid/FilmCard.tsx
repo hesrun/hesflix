@@ -29,14 +29,14 @@ export default function FilmCard({
                 key={movieId}
                 className="group bg-gray-900 border-1 border-gray-800 rounded-md overflow-hidden"
             >
-                <div className="overflow-hidden relative">
+                <div className="overflow-hidden relative aspect-[2/3]">
                     {posterPath ? (
                         <Image
                             src={`https://image.tmdb.org/t/p/w500/${posterPath}`}
                             width={350}
                             height={500}
                             alt={title}
-                            className="group-hover:scale-110 transition-all"
+                            className="group-hover:scale-110 transition-all h-full w-full object-cover"
                         />
                     ) : (
                         <NoPoster />
