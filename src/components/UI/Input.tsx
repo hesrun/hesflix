@@ -1,6 +1,11 @@
-import { InputHTMLAttributes, ReactNode, forwardRef } from 'react';
+import {
+    InputHTMLAttributes,
+    ReactNode,
+    forwardRef,
+    cloneElement,
+} from 'react';
 
-export interface CustomInputProps extends Omit<
+export interface InputProps extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'size'
 > {
@@ -11,7 +16,7 @@ export interface CustomInputProps extends Omit<
     helperText?: string;
 }
 
-const Input = forwardRef<HTMLInputElement, CustomInputProps>(
+const Input = forwardRef<HTMLInputElement, InputProps>(
     (
         {
             size = 'md',
@@ -31,18 +36,18 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
             lg: 'px-6 py-3 text-lg',
         };
 
-        const iconSizeClasses = {
-            sm: 'w-4 h-4',
-            md: 'w-5 h-5',
-            lg: 'w-6 h-6',
+        const iconSizes = {
+            sm: 16,
+            md: 16,
+            lg: 24,
         };
 
         const baseClasses =
-            'w-full rounded-md bg-transparent border-2 font-medium transition-colors focus:outline-none focus:ring-1 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-70 disabled:bg-gray-900';
+            'w-full rounded-md bg-transparent border-1 font-medium transition-colors focus:outline-none focus:ring-1 focus:ring-amber-500/60 focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-70 disabled:bg-gray-900';
 
         const stateClasses = error
             ? 'border-red-600 text-white placeholder:text-red-400'
-            : 'border-amber-500 text-white placeholder:text-gray-400 hover:border-amber-400';
+            : 'border-gray-700 text-white placeholder:text-gray-400 hover:border-amber-500';
 
         const paddingClasses =
             icon && iconPosition === 'left'
@@ -51,12 +56,19 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
                   ? 'pr-10'
                   : '';
 
+        const renderIcon = () => {
+            if (!icon) return null;
+            return cloneElement(icon as React.ReactElement<any>, {
+                size: iconSizes[size],
+            });
+        };
+
         return (
             <div className="w-full">
                 <div className="relative">
                     {icon && iconPosition === 'left' && (
                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500">
-                            <div className={iconSizeClasses[size]}>{icon}</div>
+                            {renderIcon()}
                         </div>
                     )}
                     <input
@@ -67,7 +79,7 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
                     />
                     {icon && iconPosition === 'right' && (
                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-500">
-                            <div className={iconSizeClasses[size]}>{icon}</div>
+                            {renderIcon()}
                         </div>
                     )}
                 </div>

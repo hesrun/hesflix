@@ -1,31 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { favoritesService } from '@/lib/api/appwrite';
+import { useFavoritesStore } from '@/store/favoritesStore';
 import Link from 'next/link';
 import Title from '@/components/UI/Title';
 import FilmCard from '@/components/filmGrid/FilmCard';
 
 export default function FavoritesPage() {
-    const { user } = useAuth();
-    const [favorites, setFavorites] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        loadFavorites();
-    }, []);
-
-    const loadFavorites = async () => {
-        try {
-            setIsLoading(true);
-            const data = await favoritesService.getUserFavorites(user!.$id);
-            setFavorites(data);
-        } catch (error) {
-            console.error('Error loading favorites:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const { isAuthenticated } = useAuth();
+    const { favorites, isLoading } = useFavoritesStore();
 
     if (isLoading) {
         return (
@@ -60,14 +42,24 @@ export default function FavoritesPage() {
                 </div>
             ) : (
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-8">
-                    {favorites.map((item) => (
-                        <FilmCard
-                            key={item.$id}
-                            data={{ ...item }}
-                            removeFavorite={true}
-                            setFavorites={setFavorites}
-                        />
-                    ))}
+                    {favorites.map((item) => {
+                        const filmCardData = {
+                            movieId: item.movieId,
+                            title: item.title,
+                            posterPath: item.posterPath,
+                            mediaType: item.mediaType,
+                            rating: item.rating,
+                            releaseDate: item.releaseDate,
+                            $id: item.$id,
+                        };
+                        return (
+                            <FilmCard
+                                key={item.$id}
+                                data={filmCardData}
+                                removeFavorite={true}
+                            />
+                        );
+                    })}
                 </div>
             )}
         </>

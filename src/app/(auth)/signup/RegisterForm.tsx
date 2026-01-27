@@ -33,7 +33,6 @@ export default function RegisterForm() {
         e.preventDefault();
         setErrors({});
 
-        // Validation
         const newErrors: typeof errors = {};
 
         if (password !== confirmPassword) {
@@ -123,12 +122,7 @@ export default function RegisterForm() {
                     helperText={errors.confirmPassword}
                 />
 
-                <Button
-                    type="submit"
-                    isLoading={isLoading}
-                    className="w-full"
-                    size="lg"
-                >
+                <Button type="submit" isLoading={isLoading} className="w-full">
                     {isLoading ? 'Creating account...' : 'Sign Up'}
                 </Button>
 

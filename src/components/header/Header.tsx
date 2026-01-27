@@ -43,8 +43,10 @@ export default function Header() {
                     className={`absolute left-0 top-full bg-black w-full p-4 pt-0 z-10 ${isMenuOpen ? 'block' : 'hidden'} md:static md:block md:ml-8 md:w-auto md:p-0`}
                     onClick={handleCloseHeaderMenu}
                 />
-                <HeaderSearch />
-                <UserMenu />
+                <div className="flex gap-2 flex-row-reverse items-center ml-auto md:flex-row md:ml-0 md:grow md:gap-4">
+                    <HeaderSearch />
+                    <UserMenu />
+                </div>
             </div>
         </header>
     );

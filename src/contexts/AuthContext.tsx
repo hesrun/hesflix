@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { Models } from 'appwrite';
 import { authService, RegisterData, LoginData } from '@/lib/api/appwrite/auth';
+import { useFavoritesStore } from '@/store/favoritesStore';
 
 interface AuthContextType {
     user: Models.User<Models.Preferences> | null;
@@ -27,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         null,
     );
     const [isLoading, setIsLoading] = useState(true);
+    const { loadFavorites, clearFavorites } = useFavoritesStore();
 
     useEffect(() => {
         checkUser();
@@ -37,6 +39,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setIsLoading(true);
             const currentUser = await authService.getCurrentUser();
             setUser(currentUser);
+
+            if (currentUser) {
+                await loadFavorites(currentUser.$id);
+            }
         } catch (error) {
             console.error('Check user error:', error);
             setUser(null);
@@ -46,33 +52,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const login = async (data: LoginData) => {
+        await authService.login(data);
         try {
-            await authService.login(data);
             await checkUser();
         } catch (error) {
-            console.error('Login error:', error);
-            throw error;
+            console.error('Failed to load user data after login:', error);
         }
     };
 
     const register = async (data: RegisterData) => {
+        await authService.register(data);
         try {
-            await authService.register(data);
             await checkUser();
         } catch (error) {
-            console.error('Register error:', error);
-            throw error;
+            console.error(
+                'Failed to load user data after registration:',
+                error,
+            );
         }
     };
 
     const logout = async () => {
-        try {
-            await authService.logout();
-            setUser(null);
-        } catch (error) {
-            console.error('Logout error:', error);
-            throw error;
-        }
+        await authService.logout();
+        setUser(null);
+        clearFavorites();
     };
 
     const refreshUser = async () => {

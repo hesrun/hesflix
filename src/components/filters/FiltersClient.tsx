@@ -100,7 +100,7 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
             <div
                 className={`fixed -translate-x-full z-50 inset-y-0 left-0 w-[280px] md:w-[250px] md:shrink-0 md:self-start ${filtersIsOpen ? 'translate-x-0' : ''} transition-transform md:relative md:translate-x-0 md:transition-none md:z-0`}
             >
-                <div className="bg-gradient-to-l from-amber-700 to-amber-300 p-px h-full overflow-y-auto">
+                <div className="bg-gradient-to-l from-amber-700 to-amber-300 p-px h-full overflow-y-auto md:overflow-visible">
                     <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg flex justify-between items-center">
                         Sorting
                         <button

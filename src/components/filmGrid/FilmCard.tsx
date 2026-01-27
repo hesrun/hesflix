@@ -16,12 +16,10 @@ interface FilmCardProps {
         $id?: string;
     };
     removeFavorite?: boolean;
-    setFavorites?: React.Dispatch<React.SetStateAction<any[]>>;
 }
 export default function FilmCard({
     data,
     removeFavorite = false,
-    setFavorites,
 }: FilmCardProps) {
     const { movieId, title, posterPath, mediaType, rating, releaseDate } = data;
     return (
@@ -43,16 +41,13 @@ export default function FilmCard({
                     ) : (
                         <NoPoster />
                     )}
-                    {rating && rating > 0 && (
+                    {rating !== undefined && (
                         <div className="absolute top-2 right-2">
                             <CircleProgress vote={rating} />
                         </div>
                     )}
-                    {removeFavorite && setFavorites ? (
-                        <RemoveFavoriteButton
-                            id={data.$id}
-                            setFavorites={setFavorites}
-                        />
+                    {removeFavorite && data.$id ? (
+                        <RemoveFavoriteButton id={data.$id} />
                     ) : !removeFavorite ? (
                         <div className="absolute top-2 left-2">
                             <FavoriteButton {...data} />

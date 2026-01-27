@@ -4,6 +4,7 @@ import { tmdb } from '@/lib/api/TMDB';
 import Pagination from '../UI/Pagination';
 import { Movie } from '@/types/movie';
 import { TV } from '@/types/tv';
+import Delay from '@/helpers/Delay';
 
 interface PropsParams {
     type: 'movie' | 'tv';

@@ -10,6 +10,15 @@ export default function UserMenu() {
     const { user, isAuthenticated, logout, isLoading } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
 
+    const handleLogout = async () => {
+        try {
+            await logout();
+            setIsOpen(false);
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
     if (isLoading) {
         return (
             <div className="w-8 h-8 rounded-full bg-gray-800 animate-pulse"></div>
@@ -29,27 +38,18 @@ export default function UserMenu() {
         );
     }
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            setIsOpen(false);
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-    };
-
     return (
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-900 hover:bg-gray-800 transition"
+                className="flex items-center gap-2 focus:outline-none cursor-pointer group"
             >
                 <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">
                     <span className="text-black font-bold text-sm">
                         {user.name?.charAt(0).toUpperCase() || 'U'}
                     </span>
                 </div>
-                <span className="hidden md:block text-sm font-medium">
+                <span className="hidden md:block text-sm font-medium group-hover:text-amber-500">
                     {user.name}
                 </span>
             </button>

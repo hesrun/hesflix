@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import RegisterForm from './RegisterForm';
+import Title from '@/components/UI/Title';
 
 export const metadata: Metadata = {
     title: 'Sign Up - HesFlix',
@@ -10,9 +11,9 @@ export default function RegisterPage() {
     return (
         <div className="min-h-[80vh] flex items-center justify-center">
             <div className="w-full max-w-md">
-                <h1 className="text-4xl font-bold text-center mb-8">
-                    Join HesFlix
-                </h1>
+                <Title className="mb-6 text-3xl text-center mx-auto">
+                    Sign Up
+                </Title>
                 <RegisterForm />
             </div>
         </div>

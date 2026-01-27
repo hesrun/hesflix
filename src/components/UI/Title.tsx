@@ -17,7 +17,7 @@ export default function Title({
     };
     return (
         <Tag
-            className={`font-bold bg-gradient-to-r w-max from-amber-700 to-amber-300 text-transparent bg-clip-text leading-tight ${
+            className={`font-bold bg-gradient-to-r w-fit from-amber-700 to-amber-300 text-transparent bg-clip-text leading-tight ${
                 sizeClasses[type]
             } ${className ?? ''}`}
         >

@@ -18,32 +18,34 @@ export default function FilmCaruselCard({ type, data }: PropsParams) {
     const path = type === 'movie' ? 'movie' : 'tv';
     return (
         <Link href={`${path}/${data.id}`} key={data.id} className="group">
-            <div className="overflow-hidden relative rounded-md">
-                {data.poster_path ? (
-                    <Image
-                        src={`https://image.tmdb.org/t/p/w500/${data.poster_path}`}
-                        alt=""
-                        width={300}
-                        height={400}
-                        className="group-hover:scale-110 transition-all"
-                    />
-                ) : (
-                    <div className="uppercase aspect-[1/1.5] flex justify-center items-center flex-col gap-2 bg-amber-500 font-medium ">
-                        <LucideFilm size={32} />
-                        no photo
+            <div className="bg-gray-900 border-1 border-gray-800 rounded-md overflow-hidden ">
+                <div className="relative rounded-md overflow-hidden">
+                    {data.poster_path ? (
+                        <Image
+                            src={`https://image.tmdb.org/t/p/w500/${data.poster_path}`}
+                            alt=""
+                            width={300}
+                            height={400}
+                            className="group-hover:scale-110 transition-all aspect-[1/1.5] object-cover"
+                        />
+                    ) : (
+                        <div className="uppercase aspect-[1/1.5] flex justify-center items-center flex-col gap-2 bg-amber-500 font-medium ">
+                            <LucideFilm size={32} />
+                            no photo
+                        </div>
+                    )}
+                    <div className="absolute top-2 right-2">
+                        <CircleProgress vote={data.vote_average} />
                     </div>
-                )}
-                <div className="absolute top-2 right-2">
-                    <CircleProgress vote={data.vote_average} />
                 </div>
-            </div>
-            <div className="py-4 flex gap-4 items-baseline">
-                <h2 className="font-bold leading-normal grow-1 group-hover:text-amber-500 transition-colors">
-                    {title}
-                </h2>
-                <span className="opacity-70 text-sm">
-                    {date && date.split('-')[0]}
-                </span>
+                <div className="p-2 gap-2 xl:p-4 flex items-baseline justify-between">
+                    <h2 className="font-bold leading-normal grow-1 group-hover:text-amber-500 transition-colors">
+                        {title}
+                    </h2>
+                    <span className="opacity-70 text-sm">
+                        {date && date.split('-')[0]}
+                    </span>
+                </div>
             </div>
         </Link>
     );

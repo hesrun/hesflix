@@ -3,7 +3,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function FilmGridLoading() {
     return (
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-12">
+        <div className="grow grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-12">
             {Array(8)
                 .fill('')
                 .map((_, index) => (

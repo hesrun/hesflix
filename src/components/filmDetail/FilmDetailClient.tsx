@@ -36,10 +36,15 @@ export default function FilmDetailClient({ data, type }: mediaDetailProps) {
         <>
             <div className="flex flex-col gap-4 mb-8 md:grid md:grid-rows-[auto_1fr] md:grid-cols-12 md:gap-x-8">
                 <div className="flex items-baseline gap-4 justify-between gap-2 md:col-start-5 md:col-end-13 md:row-start-1">
-                    <Title type="h1">{media.title}</Title>
-                    <span className="text-white/50 text-xl md:text-3xl">{`(${
-                        media.date.split('-')[0]
-                    })`}</span>
+                    <div>
+                        <Title type="h1">{media.title}</Title>
+                        <span className="text-white/50 text-xl md:text-2xl">{`(${
+                            media.date.split('-')[0]
+                        })`}</span>
+                    </div>
+                    <div>
+                        <FavoriteButton {...favoriteData} />
+                    </div>
                 </div>
                 <div className="shrink-0 rounded-lg overflow-hidden md:col-start-1 md:col-end-5 md:row-start-1 md:row-end-3">
                     {data.poster_path ? (
@@ -80,9 +85,7 @@ export default function FilmDetailClient({ data, type }: mediaDetailProps) {
                             </div>
                         </div>
                     )}
-                    <div>
-                        <FavoriteButton {...favoriteData} />
-                    </div>
+
                     <div>
                         <LineTitle type="h3">Overview</LineTitle>
                         <div>{decodeHtmlEntities(data.overview)}</div>

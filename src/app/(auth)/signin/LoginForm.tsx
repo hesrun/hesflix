@@ -71,22 +71,11 @@ export default function LoginForm() {
                     <p className="text-red-500 text-sm text-center">{error}</p>
                 )}
 
-                <Button
-                    type="submit"
-                    isLoading={isLoading}
-                    className="w-full"
-                    size="lg"
-                >
+                <Button type="submit" isLoading={isLoading} className="w-full">
                     {isLoading ? 'Logging in...' : 'Login'}
                 </Button>
 
-                <div className="text-center space-y-2">
-                    <Link
-                        href="/auth/forgot-password"
-                        className="text-sm text-amber-500 hover:text-amber-400 block"
-                    >
-                        Forgot password?
-                    </Link>
+                <div className="text-center">
                     <p className="text-gray-400 text-sm">
                         Don&apos;t have an account?{' '}
                         <Link
