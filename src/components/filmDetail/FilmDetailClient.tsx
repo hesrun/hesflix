@@ -109,42 +109,6 @@ export default function FilmDetailClient({ data, type }: mediaDetailProps) {
                     )}
                 </div>
             </div>
-            {media.seasons && (
-                <div>
-                    <Title type="h2">Seasons List</Title>
-                    <div className="flex overflow-auto gap-4 scroll pb-4 mb-8">
-                        {media.seasons.map((item) => (
-                            <div
-                                key={item.id}
-                                className="w-[180px] shrink-0 bg-white/10 rounded-xl overflow-hidden flex flex-col"
-                            >
-                                <div className="aspect-[2/3] relative">
-                                    <Image
-                                        src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
-                                        alt={item.name}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                                <div className="py-2 px-4 mt-auto">
-                                    <span className="font-medium">
-                                        {item.name}
-                                    </span>
-                                    <div className="flex justify-between">
-                                        <div className="text-gray-500 text-sm font-medium">
-                                            {item.episode_count} Episodes
-                                        </div>
-                                        <span className="text-sm text-amber-500">
-                                            {item.air_date &&
-                                                item.air_date.split('-')[0]}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
         </>
     );
 }
