@@ -10,3 +10,27 @@
 .react-loading-skeleton {
     vertical-align: middle;
 }
+
+.rc-slider {
+    @apply h-4 relative;
+    &-rail {
+        @apply bg-amber-500/50 absolute w-full rounded-full h-1 top-1.5;
+    }
+    &-track {
+        @apply bg-amber-500 absolute w-full rounded-full h-1 top-1.5 cursor-pointer;
+    }
+    &-step {
+        @apply absolute h-full w-full bg-transparent;
+    }
+    &-handle {
+        @apply w-1 h-4 bg-amber-500 rounded-sm absolute cursor-pointer top-1/2 transform -translate-y-1/2;
+        &:focus,
+        &:hover,
+        &:active {
+            @apply bg-white;
+        }
+    }
+    &-handle-click-focused {
+        @apply ring-2 ring-amber-400;
+    }
+}

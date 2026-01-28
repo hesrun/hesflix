@@ -1,4 +1,4 @@
-import FilmGrid from '@/components/filmGrid/FilmGrid';
+import FilmGridServer from '@/components/filmGrid/FilmGridServer';
 import FilmGridLoading from '@/components/filmGrid/FilmGridLoading';
 import FiltersServer from '@/components/filters/FiltersServer';
 import Title from '@/components/UI/Title';
@@ -64,7 +64,7 @@ export default async function MoviesPage({
                     key={JSON.stringify(paramsSearch)}
                     fallback={<FilmGridLoading />}
                 >
-                    <FilmGrid type={type} params={paramsSearch} />
+                    <FilmGridServer type={type} params={paramsSearch} />
                 </Suspense>
             </div>
         </>

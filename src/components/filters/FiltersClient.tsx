@@ -3,6 +3,7 @@ import { useUIStore } from '@/store/UIStore';
 import { Genre } from '@/types/common';
 import { LucideCheck, LucideX } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Slider from 'rc-slider';
 import { useEffect, useState } from 'react';
 
 interface FiltersClientProips {
@@ -25,6 +26,12 @@ const sortList = [
     },
 ];
 
+interface Filters {
+    genres: string[];
+    sort: string;
+    rating: [number, number];
+}
+
 export default function FiltersClient({ data, type }: FiltersClientProips) {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -32,41 +39,68 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
     const filtersIsOpen = useUIStore((state) => state.filtersIsOpen);
     const toggleFilters = useUIStore((state) => state.toggleFilters);
 
-    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-    const [selectedSort, setSelectedSort] = useState<string>();
+    const [filters, setFilters] = useState<Filters>({
+        genres: [],
+        sort: 'popularity.desc',
+        rating: [0, 10],
+    });
 
     useEffect(() => {
-        setSelectedGenres(
-            (searchParams.get('with_genres')?.split(',') ?? []).filter(Boolean),
-        );
-        setSelectedSort(searchParams.get('sort') ?? 'popularity.desc');
+        const minRating = searchParams.get('vote_average.gte');
+        const maxRating = searchParams.get('vote_average.lte');
+
+        setFilters({
+            genres: (searchParams.get('with_genres')?.split(',') ?? []).filter(
+                Boolean,
+            ),
+            sort: searchParams.get('sort') ?? 'popularity.desc',
+            rating: [
+                minRating ? parseFloat(minRating) : 0,
+                maxRating ? parseFloat(maxRating) : 10,
+            ],
+        });
     }, [searchParams]);
 
     const handleGenreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, checked } = e.target;
-        setSelectedGenres((prev) => {
-            return checked ? [...prev, id] : prev.filter((f) => f !== id);
-        });
+        setFilters((prev) => ({
+            ...prev,
+            genres: checked
+                ? [...prev.genres, id]
+                : prev.genres.filter((f) => f !== id),
+        }));
     };
 
     const handleSortChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedSort(e.target.id);
+        setFilters((prev) => ({ ...prev, sort: e.target.id }));
     };
 
     const applyFilters = () => {
         toggleFilters();
         const params = new URLSearchParams(searchParams.toString());
 
-        if (selectedGenres.length > 0) {
-            params.set('with_genres', selectedGenres.join(','));
+        if (filters.genres.length > 0) {
+            params.set('with_genres', filters.genres.join(','));
         } else {
             params.delete('with_genres');
         }
 
-        if (selectedSort) {
-            params.set('sort', selectedSort);
+        if (filters.sort) {
+            params.set('sort', filters.sort);
         } else {
             params.delete('sort');
+        }
+
+        if (filters.rating[0] > 0) {
+            params.set('vote_average.gte', filters.rating[0].toString());
+        } else {
+            params.delete('vote_average.gte');
+        }
+
+        if (filters.rating[1] < 10) {
+            params.set('vote_average.lte', filters.rating[1].toString());
+        } else {
+            params.delete('vote_average.lte');
         }
 
         params.delete('page');
@@ -80,13 +114,23 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
         ).filter(Boolean);
         const currentSort = searchParams.get('sort') ?? 'popularity.desc';
 
+        const currentMinRating = searchParams.get('vote_average.gte');
+        const currentMaxRating = searchParams.get('vote_average.lte');
+        const currentRatingRange: [number, number] = [
+            currentMinRating ? parseFloat(currentMinRating) : 0,
+            currentMaxRating ? parseFloat(currentMaxRating) : 10,
+        ];
+
         const genresChanged =
-            selectedGenres.length !== currentGenres.length ||
-            selectedGenres.some((g) => !currentGenres.includes(g));
+            filters.genres.length !== currentGenres.length ||
+            filters.genres.some((g) => !currentGenres.includes(g));
 
-        const sortChanged = selectedSort !== currentSort;
+        const sortChanged = filters.sort !== currentSort;
+        const ratingChanged =
+            filters.rating[0] !== currentRatingRange[0] ||
+            filters.rating[1] !== currentRatingRange[1];
 
-        return genresChanged || sortChanged;
+        return genresChanged || sortChanged || ratingChanged;
     };
 
     return (
@@ -123,13 +167,13 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
                                     type="radio"
                                     name="sorting"
                                     id={item.query}
-                                    checked={selectedSort === item.query}
+                                    checked={filters.sort === item.query}
                                     className="sr-only peer"
                                 />
                                 <div className="w-4 h-4 border border-amber-500 rounded-full flex items-center justify-center">
                                     <div
                                         className={`w-2 h-2 bg-amber-500 rounded-full opacity-0 ${
-                                            selectedSort === item.query &&
+                                            filters.sort === item.query &&
                                             'opacity-100'
                                         }`}
                                     ></div>
@@ -137,6 +181,32 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
                                 <span className="text-sm">{item.name}</span>
                             </label>
                         ))}
+                    </div>
+                    <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg">
+                        Rating
+                    </div>
+                    <div className="bg-black p-4">
+                        <div className="mb-2 flex justify-between text-sm items-center font-medium">
+                            <span className="bg-amber-500 text-black leading-none px-2 py-[2px] rounded-sm">
+                                {filters.rating[0].toFixed(0)}
+                            </span>
+                            <span className="bg-amber-500 text-black leading-none px-2 py-[2px] rounded-sm">
+                                {filters.rating[1].toFixed(0)}
+                            </span>
+                        </div>
+                        <Slider
+                            range
+                            min={0}
+                            max={10}
+                            step={0.5}
+                            value={filters.rating}
+                            onChange={(value) =>
+                                setFilters((prev) => ({
+                                    ...prev,
+                                    rating: value as [number, number],
+                                }))
+                            }
+                        />
                     </div>
                     <div className="bg-gradient-to-l from-amber-700 to-amber-300 text-black px-4 py-2 font-semibold text-lg">
                         Genres
@@ -153,7 +223,7 @@ export default function FiltersClient({ data, type }: FiltersClientProips) {
                                     type="checkbox"
                                     name="genres"
                                     id={String(item.id)}
-                                    checked={selectedGenres.includes(
+                                    checked={filters.genres.includes(
                                         String(item.id),
                                     )}
                                     className="sr-only peer"

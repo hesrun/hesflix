@@ -20,10 +20,12 @@ export const tmdb = {
             page = 1,
             sort = 'popularity.desc',
             genres = '',
+            vote_average_gte = 0,
+            vote_average_lte = 10,
         ): Promise<T extends 'movie' ? FilmsResponse : TVResponse> {
             const url = `${BASE_URL}/discover/${type}?page=${page}&sort_by=${sort}${
                 genres ? `&with_genres=${genres}` : ''
-            }`;
+            }${vote_average_gte ? `&vote_average.gte=${vote_average_gte}` : ''}${vote_average_lte ? `&vote_average.lte=${vote_average_lte}` : ''}`;
             return fetchFromTMDB<
                 T extends 'movie' ? FilmsResponse : TVResponse
             >(url);
