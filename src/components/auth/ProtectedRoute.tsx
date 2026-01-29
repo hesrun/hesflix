@@ -9,10 +9,6 @@ interface ProtectedRouteProps {
     fallback?: React.ReactNode;
 }
 
-/**
- * Компонент для защиты контента на странице
- * Перенаправляет неавторизованных пользователей на страницу входа
- */
 export default function ProtectedRoute({
     children,
     fallback,
@@ -23,7 +19,6 @@ export default function ProtectedRoute({
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
-            // Сохраняем текущий путь для редиректа после входа
             const signInUrl = `/signin?redirect=${encodeURIComponent(pathname)}`;
             router.push(signInUrl);
         }
