@@ -1,7 +1,7 @@
 'use client';
 import { useFilters } from '@/hooks/useFilters';
 import { useUIStore } from '@/store/UIStore';
-import { Genre } from '@/types/common';
+import { Genre } from '@/types/genre';
 import { LucideCheck, LucideX } from 'lucide-react';
 import Slider from 'rc-slider';
 

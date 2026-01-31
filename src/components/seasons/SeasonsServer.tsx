@@ -1,9 +1,8 @@
 import Image from 'next/image';
-import NoPoster from '../UI/Caps/NoPoster';
-import CircleProgress from '../UI/CircleProgress';
 import Title from '../UI/Title';
 import { tmdb } from '@/lib/api/TMDB';
 import { TV } from '@/types/tv';
+import SeasonsList from './SeasonsList';
 
 interface SeasonsServerProps {
     id: number;
@@ -33,49 +32,7 @@ export default async function SeasonsServer({ id, type }: SeasonsServerProps) {
             <Title type="h2" className="mb-6">
                 Seasons List
             </Title>
-            <div className="space-y-8">
-                {tv.seasons?.map((item) => (
-                    <div
-                        key={item.id}
-                        className="grid grid-cols-[100px_1fr] gap-4 items-start md:grid-cols-[150px_1fr] md:items-center md:gap-8 md:border border-white/10 rounded-md hover:border-amber-500/30 hover:bg-white/5 transition-colors"
-                    >
-                        <div className="aspect-[2/3] relative overflow-hidden rounded-md">
-                            {item.poster_path ? (
-                                <Image
-                                    src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
-                                    alt={item.name}
-                                    fill
-                                    className="object-cover"
-                                />
-                            ) : (
-                                <NoPoster />
-                            )}
-                        </div>
-                        <div className="grid gap-2 xl:gap-4 md:py-2 pr-2">
-                            <h2 className="text-amber-500 font-semibold text-xl xl:text-2xl">
-                                {item.name}
-                                {item.air_date && (
-                                    <span className="text-white/70 ml-2 font-normal">
-                                        {item.air_date.split('-')[0]}
-                                    </span>
-                                )}
-                            </h2>
-                            <div className="text-sm text-white/70">
-                                <p>{item.overview}</p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div>
-                                    <CircleProgress vote={item.vote_average} />
-                                </div>
-                                <div className="text-gray-500 font-medium text-sm xl:text-base">
-                                    {item.episode_count} Episodes
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            {/* {<JsonDisp data={tv} />} */}
+            <SeasonsList data={tv} />
         </div>
     );
 }

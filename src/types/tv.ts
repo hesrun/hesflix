@@ -1,4 +1,5 @@
-import { Genre, SeasonsItem } from './common';
+import { Genre } from './genre';
+import { SeasonsItem } from './seasons';
 
 export interface TV {
     adult: boolean;

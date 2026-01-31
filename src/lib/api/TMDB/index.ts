@@ -9,7 +9,8 @@ import { VideosResponse } from '@/types/videos';
 import { PeopleSearchResponse, Person } from '@/types/people';
 import { PersonCreditsResponse } from '@/types/personCredits';
 import { SearchResponse } from '@/types/Search';
-import { GenresResponse } from '@/types/responses';
+import { GenresResponse } from '@/types/genre';
+import { EpisodesResponse } from '@/types/episodes';
 
 type MediaType = 'movie' | 'tv';
 
@@ -54,6 +55,13 @@ export const tmdb = {
         getVideos(type: MediaType, id: number): Promise<VideosResponse> {
             const url = `${BASE_URL}/${type}/${id}/videos`;
             return fetchFromTMDB<VideosResponse>(url);
+        },
+    },
+
+    seasons: {
+        getSeason(tv_id: number, season_id: number): Promise<EpisodesResponse> {
+            const url = `${BASE_URL}/tv/${tv_id}/season/${season_id}`;
+            return fetchFromTMDB<EpisodesResponse>(url);
         },
     },
 
