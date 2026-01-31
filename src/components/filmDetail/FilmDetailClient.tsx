@@ -8,6 +8,7 @@ import Title from '../UI/Title';
 import Link from 'next/link';
 import NoPoster from '../UI/Caps/NoPoster';
 import FavoriteButton from '../favorites/FavoriteButton';
+import Button from '../UI/Button';
 
 interface mediaDetailProps {
     data: Movie | TV;
@@ -105,6 +106,17 @@ export default function FilmDetailClient({ data, type }: mediaDetailProps) {
                                     </li>
                                 ))}
                             </ul>
+                        </div>
+                    )}
+                    {media.seasons && (
+                        <div>
+                            <LineTitle type="h3">Seasons</LineTitle>
+                            <Button
+                                href={`/tv/${data.id}/seasons/`}
+                                variant="outline"
+                            >
+                                View All {media.seasons.length} Seasons
+                            </Button>
                         </div>
                     )}
                 </div>

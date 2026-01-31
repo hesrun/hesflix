@@ -20,12 +20,12 @@ export const authService = {
         name,
     }: RegisterData): Promise<Models.User<Models.Preferences>> {
         try {
-            const user = await account.create(
-                ID.unique(),
+            const user = await account.create({
+                userId: ID.unique(),
                 email,
                 password,
                 name,
-            );
+            });
             await this.login({ email, password });
             toast.success('Account created successfully! Welcome!');
 
@@ -39,10 +39,10 @@ export const authService = {
 
     async login({ email, password }: LoginData): Promise<Models.Session> {
         try {
-            const session = await account.createEmailPasswordSession(
+            const session = await account.createEmailPasswordSession({
                 email,
                 password,
-            );
+            });
             toast.success('Successfully logged in!');
             return session;
         } catch (error) {
@@ -54,7 +54,7 @@ export const authService = {
 
     async logout(): Promise<void> {
         try {
-            await account.deleteSession('current');
+            await account.deleteSession({ sessionId: 'current' });
             toast.success('Logged out successfully');
         } catch (error) {
             console.error('Logout error:', error);
@@ -74,7 +74,7 @@ export const authService = {
 
     async checkSession(): Promise<boolean> {
         try {
-            await account.getSession('current');
+            await account.getSession({ sessionId: 'current' });
             return true;
         } catch (error) {
             return false;
@@ -83,7 +83,7 @@ export const authService = {
 
     async updateName(name: string): Promise<Models.User<Models.Preferences>> {
         try {
-            const user = await account.updateName(name);
+            const user = await account.updateName({ name });
             toast.success('Name updated successfully');
             return user;
         } catch (error) {
