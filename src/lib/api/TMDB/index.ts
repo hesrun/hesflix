@@ -100,4 +100,16 @@ export const tmdb = {
             return fetchFromTMDB<GenresResponse>(url);
         },
     },
+
+    collections: {
+        getByEndpoint(
+            endpoint: string,
+            page = 1,
+        ): Promise<FilmsResponse | TVResponse | SearchResponse> {
+            const url = `${BASE_URL}${endpoint}?page=${page}`;
+            return fetchFromTMDB<FilmsResponse | TVResponse | SearchResponse>(
+                url,
+            );
+        },
+    },
 };

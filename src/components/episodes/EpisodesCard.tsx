@@ -13,9 +13,9 @@ export default function EpisodesCard({ data }: EpisodesCardProps) {
     return (
         <div
             key={data.id}
-            className="md:border border-white/10 md:rounded-md not-last:border-b not-last:border-b-white/10 pb-6"
+            className="md:border border-white/10 md:rounded-md not-last:border-b not-last:border-b-white/10 pb-6 md:flex md:pb-0 xl:items-center"
         >
-            <div className="rounded-lg overflow-hidden">
+            <div className="rounded-lg overflow-hidden md:w-84 md:flex-shrink-0 md:rounded-br-none md:rounded-tr-none">
                 {data.still_path ? (
                     <Image
                         src={`https://image.tmdb.org/t/p/w780/${data.still_path}`}
@@ -28,7 +28,7 @@ export default function EpisodesCard({ data }: EpisodesCardProps) {
                     <NoPoster aspect="16/9" />
                 )}
             </div>
-            <div className="pt-4 space-y-2">
+            <div className="pt-4 space-y-2 md:p-4 xl:pl-6">
                 <h3 className="text-amber-500 font-semibold text-xl xl:text-2xl">
                     Episode {data.episode_number}: {data.name}
                 </h3>

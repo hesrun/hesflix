@@ -12,6 +12,7 @@ const navigationLinks = [
     { href: '/movie', label: 'Movies' },
     { href: '/tv', label: 'Serials' },
     { href: '/peoples', label: 'Peoples' },
+    { href: '/collections', label: 'Collections' },
 ];
 
 export default function HeaderNav({ className = '', onClick }: HeaderNavProps) {
