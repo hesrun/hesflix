@@ -4,13 +4,36 @@ A modern web application for browsing movies and TV series with authentication a
 
 ## ✨ Features
 
-- 🎥 Browse popular movies and TV series
-- 🔍 Search movies, TV shows, and actors
-- 📊 Detailed information (ratings, trailers, cast)
-- 👤 **User authentication** (Appwrite)
+### 🎥 Content Browsing
+
+- Browse popular movies and TV series
+- **Curated Collections** - Trending, Top Rated, Popular, Upcoming, Now Playing
+- Search movies, TV shows, and actors
+- Advanced filters (genres, ratings, sorting)
+- Detailed information (ratings, trailers, cast, seasons & episodes)
+
+### 👤 User Features
+
+- **User authentication** (Appwrite)
 - ❤️ **Favorites list** for registered users
-- 🎭 Actor profiles and filmography
-- 📱 Responsive design
+- Personal profile management
+- Protected routes for authenticated users
+
+### 📺 Media Details
+
+- 🎭 Actor profiles and complete filmography
+- 📽️ Trailers and videos
+- 🎬 Full cast and crew credits
+- 📺 TV show seasons and episodes
+- ⭐ User ratings and reviews
+
+### 🎨 UI/UX
+
+- 📱 Fully responsive design
+- ⚡ Server-side rendering (SSR) with Next.js 15
+- 🔄 Suspense boundaries with loading states
+- 🎯 SEO optimized with dynamic metadata
+- 🚨 Comprehensive error handling
 
 ## 🚀 Getting Started
 
@@ -92,3 +115,33 @@ Add environment variables in Vercel project settings.
 
 1. Update hostname in Appwrite Platform settings
 2. Add your production domain
+
+## Key Technologies
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **State Management:** Zustand
+- **Authentication:** Appwrite
+- **API:** The Movie Database (TMDB)
+- **Deployment:** Vercel
+
+## 🆕 Recent Updates
+
+### Collections System
+
+- 10 curated collections (Trending, Top Rated, Popular, etc.)
+- Scalable configuration in `constants/collections.ts`
+- Easy to add new collections
+
+### Enhanced SEO
+
+- Dynamic metadata for all pages
+- OpenGraph tags for social sharing
+- Optimized meta descriptions
+
+### Error Handling
+
+- Custom error boundaries for all routes
+- User-friendly error messages
+- Graceful fallbacks
