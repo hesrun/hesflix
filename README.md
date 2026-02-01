@@ -1,6 +1,13 @@
 # 🎬 HeSFlix - Movies & TV Series Platform
 
+> **🚀 Live Demo:** [https://hesflix.vercel.app](https://hesflix.vercel.app)
+
 A modern web application for browsing movies and TV series with authentication and favorites system.
+
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwind-css)](https://tailwindcss.com/)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://vercel.com/)
 
 ## ✨ Features
 
