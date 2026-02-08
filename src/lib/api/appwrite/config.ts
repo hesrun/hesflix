@@ -7,7 +7,7 @@ export const APPWRITE_PROJECT_ID =
 
 export const DATABASE_ID = process.env.NEXT_PUBLIC_DATABASE_ID || '';
 export const FAVORITES_TABLE_ID = 'favorites';
-export const WATCHLIST_TABLE_ID = 'watchlist';
+export const COMMENTS_TABLE_ID = 'comments';
 
 const client = new Client()
     .setEndpoint(APPWRITE_ENDPOINT)

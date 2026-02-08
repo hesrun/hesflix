@@ -5,6 +5,7 @@ import BackLink from '@/components/UI/BackLink';
 import Title from '@/components/UI/Title';
 import VideosGridSkeleton from '@/components/videos/VideosGridSkeleton';
 import VideosServer from '@/components/videos/VideosServer';
+import CommentsSection from '@/components/comments/CommentsSection';
 import { Movie } from '@/types/movie';
 import { TV } from '@/types/tv';
 import { Metadata } from 'next';
@@ -15,7 +16,7 @@ import FilmDetailServer from '@/components/filmDetail/FilmDetailServer';
 
 interface MediaDetailProps {
     params: {
-        id: number;
+        id: string;
         type: 'movie' | 'tv';
     };
 }
@@ -24,7 +25,7 @@ export async function generateMetadata({
     params,
 }: MediaDetailProps): Promise<Metadata> {
     const { id, type } = await params;
-    const data = await tmdb.media.getDetail(type, id);
+    const data = await tmdb.media.getDetail(type, parseInt(id));
     const metaTitle =
         type === 'movie' ? (data as Movie).title : (data as TV).name;
     const metaDescription = data.overview;
@@ -55,20 +56,23 @@ export default async function MoviePage({ params }: MediaDetailProps) {
         <>
             <BackLink label="Back" />
             <Suspense fallback={<FilmDetailSkeleton />}>
-                <FilmDetailServer id={id} type={type} />
+                <FilmDetailServer id={parseInt(id)} type={type} />
             </Suspense>
             <Title type="h2" className="mb-6">
                 Credits
             </Title>
             <Suspense fallback={<CreditsListSkeleton />}>
-                <CreditsListServer type={type} id={id} />
+                <CreditsListServer type={type} id={parseInt(id)} />
             </Suspense>
             <Title type="h2" className="mb-6">
                 Trailers
             </Title>
             <Suspense fallback={<VideosGridSkeleton />}>
-                <VideosServer type={type} id={id} />
+                <VideosServer type={type} id={parseInt(id)} />
             </Suspense>
+            <div className="mt-12">
+                <CommentsSection movieId={id} mediaType={type} />
+            </div>
         </>
     );
 }

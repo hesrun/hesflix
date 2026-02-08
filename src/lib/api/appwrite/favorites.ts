@@ -2,6 +2,11 @@ import { tablesDB, DATABASE_ID, FAVORITES_TABLE_ID } from './config';
 import { ID, Query } from 'appwrite';
 import { toast } from 'sonner';
 
+const TABLE_CONFIG = {
+    databaseId: DATABASE_ID,
+    tableId: FAVORITES_TABLE_ID,
+};
+
 export interface FavoriteItem {
     userId: string;
     movieId: number;
@@ -19,8 +24,7 @@ export const favoritesService = {
     ): Promise<any> {
         try {
             const row = await tablesDB.createRow({
-                databaseId: DATABASE_ID,
-                tableId: FAVORITES_TABLE_ID,
+                ...TABLE_CONFIG,
                 rowId: ID.unique(),
                 data: {
                     userId,
@@ -44,8 +48,7 @@ export const favoritesService = {
     async removeFromFavorites(rowId: string): Promise<void> {
         try {
             await tablesDB.deleteRow({
-                databaseId: DATABASE_ID,
-                tableId: FAVORITES_TABLE_ID,
+                ...TABLE_CONFIG,
                 rowId: rowId,
             });
             toast.success('Removed from favorites');
@@ -59,8 +62,7 @@ export const favoritesService = {
     async getUserFavorites(userId: string): Promise<any[]> {
         try {
             const response = await tablesDB.listRows({
-                databaseId: DATABASE_ID,
-                tableId: FAVORITES_TABLE_ID,
+                ...TABLE_CONFIG,
                 queries: [
                     Query.equal('userId', userId),
                     Query.orderDesc('$createdAt'),
@@ -76,8 +78,7 @@ export const favoritesService = {
     async isFavorite(userId: string, movieId: number): Promise<boolean> {
         try {
             const response = await tablesDB.listRows({
-                databaseId: DATABASE_ID,
-                tableId: FAVORITES_TABLE_ID,
+                ...TABLE_CONFIG,
                 queries: [
                     Query.equal('userId', userId),
                     Query.equal('movieId', movieId),
@@ -93,8 +94,7 @@ export const favoritesService = {
     async getFavoriteRow(userId: string, movieId: number): Promise<any | null> {
         try {
             const response = await tablesDB.listRows({
-                databaseId: DATABASE_ID,
-                tableId: FAVORITES_TABLE_ID,
+                ...TABLE_CONFIG,
                 queries: [
                     Query.equal('userId', userId),
                     Query.equal('movieId', movieId),

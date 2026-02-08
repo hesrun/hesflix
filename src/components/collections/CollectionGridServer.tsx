@@ -1,8 +1,6 @@
 import { tmdb } from '@/lib/api/TMDB';
 import { Collection } from '@/types/collection';
 import FilmCard from '@/components/filmGrid/FilmCard';
-import { Movie } from '@/types/movie';
-import { TV } from '@/types/tv';
 
 interface CollectionGridServerProps {
     collection: Collection;
