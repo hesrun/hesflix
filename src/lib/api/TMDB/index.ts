@@ -112,4 +112,90 @@ export const tmdb = {
             );
         },
     },
+
+    aiSearch: {
+        async searchPerson(name: string): Promise<number | null> {
+            const url = `${BASE_URL}/search/person?query=${encodeURIComponent(name)}`;
+            const response = await fetchFromTMDB<PeopleSearchResponse>(
+                url,
+                false,
+            );
+            return response.results[0]?.id || null;
+        },
+
+        searchMovieByTitle(title: string, page = 1): Promise<FilmsResponse> {
+            const url = `${BASE_URL}/search/movie?query=${encodeURIComponent(title)}&page=${page}`;
+            return fetchFromTMDB<FilmsResponse>(url, false);
+        },
+
+        searchTVByTitle(title: string, page = 1): Promise<TVResponse> {
+            const url = `${BASE_URL}/search/tv?query=${encodeURIComponent(title)}&page=${page}`;
+            return fetchFromTMDB<TVResponse>(url, false);
+        },
+
+        discoverMovies(params: {
+            page?: number;
+            with_cast?: string;
+            with_crew?: string;
+            with_genres?: string;
+            'vote_average.gte'?: number;
+            'vote_average.lte'?: number;
+            'primary_release_date.gte'?: string;
+            'primary_release_date.lte'?: string;
+            sort_by?: string;
+        }): Promise<FilmsResponse> {
+            const queryParams = new URLSearchParams();
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== undefined && value !== null && value !== '') {
+                    queryParams.append(key, String(value));
+                }
+            });
+            const url = `${BASE_URL}/discover/movie?${queryParams.toString()}`;
+            return fetchFromTMDB<FilmsResponse>(url, false);
+        },
+
+        discoverTV(params: {
+            page?: number;
+            with_cast?: string;
+            with_crew?: string;
+            with_genres?: string;
+            'vote_average.gte'?: number;
+            'vote_average.lte'?: number;
+            'first_air_date.gte'?: string;
+            'first_air_date.lte'?: string;
+            sort_by?: string;
+        }): Promise<TVResponse> {
+            const queryParams = new URLSearchParams();
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== undefined && value !== null && value !== '') {
+                    queryParams.append(key, String(value));
+                }
+            });
+            const url = `${BASE_URL}/discover/tv?${queryParams.toString()}`;
+            return fetchFromTMDB<TVResponse>(url, false);
+        },
+
+        getSimilarMovies(movieId: number, page = 1): Promise<FilmsResponse> {
+            const url = `${BASE_URL}/movie/${movieId}/similar?page=${page}`;
+            return fetchFromTMDB<FilmsResponse>(url, false);
+        },
+
+        getSimilarTV(tvId: number, page = 1): Promise<TVResponse> {
+            const url = `${BASE_URL}/tv/${tvId}/similar?page=${page}`;
+            return fetchFromTMDB<TVResponse>(url, false);
+        },
+
+        getRecommendationsMovies(
+            movieId: number,
+            page = 1,
+        ): Promise<FilmsResponse> {
+            const url = `${BASE_URL}/movie/${movieId}/recommendations?page=${page}`;
+            return fetchFromTMDB<FilmsResponse>(url, false);
+        },
+
+        getRecommendationsTV(tvId: number, page = 1): Promise<TVResponse> {
+            const url = `${BASE_URL}/tv/${tvId}/recommendations?page=${page}`;
+            return fetchFromTMDB<TVResponse>(url, false);
+        },
+    },
 };

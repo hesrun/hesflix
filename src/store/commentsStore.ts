@@ -70,7 +70,7 @@ export const useCommentsStore = create<CommentsState>((set, get) => ({
         parentId?: string,
     ) => {
         try {
-            const newComment = await commentsService.addComment({
+            await commentsService.addComment({
                 userId,
                 userName,
                 movieId,

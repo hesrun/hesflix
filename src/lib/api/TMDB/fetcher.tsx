@@ -1,9 +1,12 @@
 import { GET_HEADER } from '@/constants/requestHeader';
 
-export async function fetchFromTMDB<T>(url: string): Promise<T> {
+export async function fetchFromTMDB<T>(
+    url: string,
+    revalidate: number | false = 3600 * 24,
+): Promise<T> {
     const res = await fetch(url, {
         ...GET_HEADER,
-        next: { revalidate: 3600 * 24 },
+        ...(revalidate !== false && { next: { revalidate } }),
     });
 
     if (!res.ok)

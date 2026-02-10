@@ -9,6 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^3.0.22",
+    "ai": "^6.0.78",
+    "ai-sdk-ollama": "^3.5.0",
     "appwrite": "^21.5.0",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.548.0",
@@ -19,6 +22,7 @@
     "react-loading-skeleton": "^3.5.0",
     "sass": "^1.93.2",
     "sonner": "^2.0.7",
+    "zod": "^4.3.6",
     "zustand": "^5.0.9"
   },
   "devDependencies": {

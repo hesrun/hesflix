@@ -32,12 +32,10 @@ export default function Comment({
     const createdAt = new Date(comment.$createdAt);
 
     const handleDelete = async () => {
-        if (confirm('Delete this comment and all replies?')) {
-            try {
-                await deleteComment(comment.$id);
-            } catch (error) {
-                console.error('Failed to delete:', error);
-            }
+        try {
+            await deleteComment(comment.$id);
+        } catch (error) {
+            console.error('Failed to delete:', error);
         }
     };
 
