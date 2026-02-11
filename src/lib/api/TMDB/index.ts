@@ -11,6 +11,7 @@ import { PersonCreditsResponse } from '@/types/personCredits';
 import { SearchResponse } from '@/types/Search';
 import { GenresResponse } from '@/types/genre';
 import { EpisodesResponse } from '@/types/episodes';
+import { KeywordsResponse } from '@/types/keyword';
 
 type MediaType = 'movie' | 'tv';
 
@@ -113,6 +114,13 @@ export const tmdb = {
         },
     },
 
+    keywords: {
+        search(query: string): Promise<KeywordsResponse> {
+            const url = `${BASE_URL}/search/keyword?query=${encodeURIComponent(query)}`;
+            return fetchFromTMDB<KeywordsResponse>(url);
+        },
+    },
+
     aiSearch: {
         async searchPerson(name: string): Promise<number | null> {
             const url = `${BASE_URL}/search/person?query=${encodeURIComponent(name)}`;
@@ -138,6 +146,8 @@ export const tmdb = {
             with_cast?: string;
             with_crew?: string;
             with_genres?: string;
+            with_keywords?: string;
+            with_original_language?: string;
             'vote_average.gte'?: number;
             'vote_average.lte'?: number;
             'primary_release_date.gte'?: string;
@@ -159,6 +169,8 @@ export const tmdb = {
             with_cast?: string;
             with_crew?: string;
             with_genres?: string;
+            with_keywords?: string;
+            with_original_language?: string;
             'vote_average.gte'?: number;
             'vote_average.lte'?: number;
             'first_air_date.gte'?: string;

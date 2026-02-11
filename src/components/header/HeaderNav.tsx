@@ -13,7 +13,6 @@ const navigationLinks = [
     { href: '/tv', label: 'Serials' },
     { href: '/peoples', label: 'Peoples' },
     { href: '/collections', label: 'Collections' },
-    { href: '/ai-search', label: 'ai-search' },
 ];
 
 export default function HeaderNav({ className = '', onClick }: HeaderNavProps) {

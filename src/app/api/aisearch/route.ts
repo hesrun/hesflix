@@ -9,6 +9,8 @@ interface AISearchParams {
     actor: string[];
     crew: string[];
     genre: number[];
+    keywords: string[];
+    language: string | null;
     minRating: number | null;
     maxRating: number | null;
     yearFrom: number | null;
@@ -45,12 +47,14 @@ export async function GET(request: Request) {
         - "actor": actor names if mentioned (e.g. "with Tom Hanks" → ["Tom Hanks"])
         - "crew": director names if mentioned (e.g. "by Nolan" → ["Christopher Nolan"])
         - "genre": genre IDs - Movies: ${movieGenres}; TV: ${tvGenres}
+        - "keywords": theme/topic keywords if mentioned (e.g. "about space", "time travel", "zombie", "heist" → ["space", "time travel", "zombie", "heist"])
+        - "language": ISO 639-1 language code if user specifies language (e.g. "ukrainian films" → "uk", "czech movies" → "cs", "french" → "fr", "spanish" → "es", "german" → "de", "italian" → "it", "japanese" → "ja", "korean" → "ko", "english" → "en")
         - "minRating"/"maxRating": if user wants quality (e.g. "best/top" → minRating:7, "high rated" → minRating:8)
         - "yearFrom"/"yearTo": if user mentions years/decades (e.g. "from 2020" → yearFrom:2020, "2000s" → yearFrom:2000,yearTo:2009)
-        - "sortBy": always "popularity.desc" (never use vote_average.desc)
+        - "sortBy": choose one of "popularity.desc" (for popular), "vote_average.desc" (for best/top rated), "vote_count.desc" (for most discussed) based on user query context
         - "mediaType": "movie"/"tv"/"all" based on context
         Return only JSON, no markdown:
-        {"title":null,"similarTo":null,"actor":[],"crew":[],"genre":[],"minRating":null,"maxRating":null,"yearFrom":null,"yearTo":null,"sortBy":"popularity.desc","mediaType":"all"}`;
+        {"title":null,"similarTo":null,"actor":[],"crew":[],"genre":[],"keywords":[],"language":null,"minRating":null,"maxRating":null,"yearFrom":null,"yearTo":null,"sortBy":"popularity.desc","mediaType":"all"}`;
 
         const { text } = await generateText({
             model: groq('llama-3.3-70b-versatile'),
@@ -58,7 +62,7 @@ export async function GET(request: Request) {
             temperature: 0.1,
         });
 
-        console.log('AI Response:', text);
+        // console.log('AI Response:', text);
 
         const params: AISearchParams = JSON.parse(text);
 
@@ -67,11 +71,15 @@ export async function GET(request: Request) {
                 const searchResults = await tmdb.aiSearch.searchMovieByTitle(
                     params.similarTo,
                 );
-                if (searchResults.results[0]) {
-                    const similar = await tmdb.aiSearch.getSimilarMovies(
-                        searchResults.results[0].id,
-                        page,
-                    );
+                const bestResult = searchResults.results.sort(
+                    (a, b) => (b.vote_count || 0) - (a.vote_count || 0),
+                )[0];
+                if (bestResult) {
+                    const similar =
+                        await tmdb.aiSearch.getRecommendationsMovies(
+                            bestResult.id,
+                            page,
+                        );
                     return Response.json({
                         results: similar.results,
                         params,
@@ -84,9 +92,12 @@ export async function GET(request: Request) {
                 const searchResults = await tmdb.aiSearch.searchTVByTitle(
                     params.similarTo,
                 );
-                if (searchResults.results[0]) {
-                    const similar = await tmdb.aiSearch.getSimilarTV(
-                        searchResults.results[0].id,
+                const bestResult = searchResults.results.sort(
+                    (a, b) => (b.vote_count || 0) - (a.vote_count || 0),
+                )[0];
+                if (bestResult) {
+                    const similar = await tmdb.aiSearch.getRecommendationsTV(
+                        bestResult.id,
                         page,
                     );
                     return Response.json({
@@ -103,11 +114,15 @@ export async function GET(request: Request) {
                     tmdb.aiSearch.searchTVByTitle(params.similarTo),
                 ]);
 
-                if (movieSearch.results[0]) {
-                    const similar = await tmdb.aiSearch.getSimilarMovies(
-                        movieSearch.results[0].id,
-                        page,
-                    );
+                const bestMovie = movieSearch.results.sort(
+                    (a, b) => (b.vote_count || 0) - (a.vote_count || 0),
+                )[0];
+                if (bestMovie) {
+                    const similar =
+                        await tmdb.aiSearch.getRecommendationsMovies(
+                            bestMovie.id,
+                            page,
+                        );
                     return Response.json({
                         results: similar.results,
                         params: { ...params, mediaType: 'movie' },
@@ -115,9 +130,14 @@ export async function GET(request: Request) {
                         total_pages: similar.total_pages,
                         total_results: similar.total_results,
                     });
-                } else if (tvSearch.results[0]) {
-                    const similar = await tmdb.aiSearch.getSimilarTV(
-                        tvSearch.results[0].id,
+                }
+
+                const bestTV = tvSearch.results.sort(
+                    (a, b) => (b.vote_count || 0) - (a.vote_count || 0),
+                )[0];
+                if (bestTV) {
+                    const similar = await tmdb.aiSearch.getRecommendationsTV(
+                        bestTV.id,
                         page,
                     );
                     return Response.json({
@@ -178,6 +198,7 @@ export async function GET(request: Request) {
 
         const actorIds: string[] = [];
         const crewIds: string[] = [];
+        const keywordIds: string[] = [];
 
         if (params.actor.length > 0) {
             const ids = await Promise.all(
@@ -197,6 +218,17 @@ export async function GET(request: Request) {
             );
         }
 
+        if (params.keywords.length > 0) {
+            const keywords = await Promise.all(
+                params.keywords.map((keyword) => tmdb.keywords.search(keyword)),
+            );
+            keywords.forEach((response) => {
+                if (response.results.length > 0) {
+                    keywordIds.push(String(response.results[0].id));
+                }
+            });
+        }
+
         const discoverParams: any = {
             page: page,
             sort_by: params.sortBy,
@@ -212,6 +244,14 @@ export async function GET(request: Request) {
 
         if (params.genre.length > 0) {
             discoverParams.with_genres = params.genre.join(',');
+        }
+
+        if (keywordIds.length > 0) {
+            discoverParams.with_keywords = keywordIds.join(',');
+        }
+
+        if (params.language !== null) {
+            discoverParams.with_original_language = params.language;
         }
 
         if (params.minRating !== null) {

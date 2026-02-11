@@ -1,9 +1,9 @@
 'use client';
 import Link from 'next/link';
 import HeaderNav from './HeaderNav';
-import HeaderSearch from './HeaderSearch';
 import UserMenu from './UserMenu';
 import { useState } from 'react';
+import { LucideWandSparkles } from 'lucide-react';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,8 +43,16 @@ export default function Header() {
                     className={`absolute left-0 top-full bg-black w-full p-4 pt-0 z-10 ${isMenuOpen ? 'block' : 'hidden'} md:static md:block md:ml-8 md:w-auto md:p-0`}
                     onClick={handleCloseHeaderMenu}
                 />
-                <div className="flex gap-2 flex-row-reverse items-center ml-auto md:flex-row md:ml-0 md:grow md:gap-4">
-                    <HeaderSearch />
+                <div className="flex items-center ml-auto gap-4">
+                    <Link
+                        href="/ai-search"
+                        className="flex items-center bg-gradient-to-r w-fit from-violet-500 to-rose-500 text-transparent bg-clip-text gap-2 hover:from-violet-600 hover:to-rose-600 transition"
+                    >
+                        <LucideWandSparkles className="text-violet-500 w-6" />
+                        <span className="uppercase font-black text-xs">
+                            Search
+                        </span>
+                    </Link>
                     <UserMenu />
                 </div>
             </div>
