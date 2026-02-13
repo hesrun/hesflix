@@ -1,9 +1,10 @@
 'use client';
 import FilmCard from '@/components/filmGrid/FilmCard';
 import Button from '@/components/UI/Button';
+import { FilmsGridSkeleton } from '@/components/UI/Caps/FilmsGridSkeleton';
 import Title from '@/components/UI/Title';
 import { LucideWandSparkles } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface SearchResult {
@@ -38,7 +39,7 @@ interface AISearchResponse {
 }
 
 const PRESETS: string[] = [
-    'Best Ukrainian war movies from the 2010s',
+    'Best Scorsese films',
     'Most popular French comedies',
     'Top rated Japanese anime series',
     'Czech dramas with high ratings',
@@ -47,7 +48,7 @@ const PRESETS: string[] = [
     'Popular Italian romance films from the 2000s',
     'Highly rated German documentaries',
     'Most discussed American action movies',
-    'Top Russian historical TV series',
+    'Movies similar to Fast & Furious',
 ];
 
 export default function AiSearch() {
@@ -59,8 +60,17 @@ export default function AiSearch() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [rateLimitError, setRateLimitError] = useState<boolean>(false);
 
-    async function handleSubmit(e: React.FormEvent) {
+    function handlePreset(preset: string) {
+        setQuery(preset);
+        AISearch(preset);
+    }
+
+    function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
+        AISearch(query);
+    }
+
+    async function AISearch(query: string) {
         setLoading(true);
         setResponse(null);
         setCurrentPage(1);
@@ -84,7 +94,6 @@ export default function AiSearch() {
                 toast.error(data.error);
             } else {
                 setResponse(data);
-                setQuery('');
             }
         } catch (err) {
             toast.error(err instanceof Error ? err.message : 'Failed to fetch');
@@ -158,9 +167,18 @@ export default function AiSearch() {
                 </Button>
             </form>
 
-            {loading && (
-                <div className="text-center py-12">
-                    <p className="text-lg opacity-70">Ищем...</p>
+            {!response && (
+                <div className="flex flex-wrap gap-2 items-start lg:gap-4 mb-6">
+                    {PRESETS.map((item) => (
+                        <button
+                            onClick={() => handlePreset(item)}
+                            className="border-1 border-gray-800 rounded-md bg-gray-900 px-4 py-2 font-medium text-amber-500 italic hover:bg-gray-800 transition-colors cursor-pointer"
+                        >
+                            <span>„</span>
+                            {item}
+                            <span>“</span>
+                        </button>
+                    ))}
                 </div>
             )}
 
@@ -170,46 +188,41 @@ export default function AiSearch() {
                         <span className="text-white/50">You ask:</span>{' '}
                         <i className="text-amber-500">"{currentQuery}"</i>
                     </div>
-                    <div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                            {response.results.map((item, index) => (
-                                <FilmCard
-                                    key={`${item.id}-${index}`}
-                                    data={{
-                                        movieId: item.id,
-                                        title:
-                                            item.title ||
-                                            item.name ||
-                                            'Unknown',
-                                        posterPath: item.poster_path || null,
-                                        mediaType:
-                                            (item.media_type as
-                                                | 'movie'
-                                                | 'tv') ||
-                                            (item.title ? 'movie' : 'tv'),
-                                        rating: item.vote_average,
-                                        releaseDate:
-                                            item.release_date ||
-                                            item.first_air_date,
-                                    }}
-                                />
-                            ))}
-                        </div>
-
-                        {currentPage < response.total_pages && (
-                            <div className="flex justify-center mt-8">
-                                <Button
-                                    onClick={loadMore}
-                                    size="lg"
-                                    isLoading={loadingMore}
-                                >
-                                    Показать еще
-                                </Button>
-                            </div>
-                        )}
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        {response.results.map((item, index) => (
+                            <FilmCard
+                                key={`${item.id}-${index}`}
+                                data={{
+                                    movieId: item.id,
+                                    title: item.title || item.name || 'Unknown',
+                                    posterPath: item.poster_path || null,
+                                    mediaType:
+                                        (item.media_type as 'movie' | 'tv') ||
+                                        (item.title ? 'movie' : 'tv'),
+                                    rating: item.vote_average,
+                                    releaseDate:
+                                        item.release_date ||
+                                        item.first_air_date,
+                                }}
+                            />
+                        ))}
                     </div>
+
+                    {currentPage < response.total_pages && (
+                        <div className="flex justify-center mt-8">
+                            <Button
+                                onClick={loadMore}
+                                size="lg"
+                                isLoading={loadingMore}
+                            >
+                                Показать еще
+                            </Button>
+                        </div>
+                    )}
                 </>
             )}
+            {loading && <FilmsGridSkeleton />}
+
             {response && response.results && response.results.length === 0 && (
                 <div className="bg-gray-900 border-1 border-gray-800 rounded-md text-center py-8 px-2 font-medium text-white/50 md:text-2xl italic">
                     Nothing found. Try a different query.

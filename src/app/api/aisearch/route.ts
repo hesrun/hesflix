@@ -39,7 +39,7 @@ export async function GET(request: Request) {
             .map(([name, id]) => `${name}=${id}`)
             .join(', ');
 
-        const prompt = `Convert user query to TMDB search params JSON. Always translate names/titles to English.
+        const prompt = `Convert user query to TMDB search params JSON. User may write the query in any language. Translate ONLY movie/TV titles and person names to English. Do NOT override the user's requested content language in the "language" field.
         Query: "${query}"
         Rules:
         - "title": exact movie/TV name if user asks for specific title (e.g. "find Inception" → "Inception")
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
             temperature: 0.1,
         });
 
-        // console.log('AI Response:', text);
+        console.log('AI Response:', text);
 
         const params: AISearchParams = JSON.parse(text);
 

@@ -4,19 +4,13 @@ import { useFavoritesStore } from '@/store/favoritesStore';
 import Link from 'next/link';
 import Title from '@/components/UI/Title';
 import FavoritesGrid from '@/components/favorites/FavoritesGrid';
+import { FilmsGridSkeleton } from '@/components/UI/Caps/FilmsGridSkeleton';
 
 function FavoritesSkeleton({ title }: { title: string }) {
     return (
         <>
-            <Title>{title}</Title>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8">
-                {[...Array(12)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="aspect-[2/3] bg-gray-800 rounded-lg animate-pulse"
-                    />
-                ))}
-            </div>
+            <Title className="mb-6">{title}</Title>
+            <FilmsGridSkeleton />
         </>
     );
 }
