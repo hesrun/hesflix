@@ -6,12 +6,14 @@ import Title from '@/components/UI/Title';
 import FavoritesGrid from '@/components/favorites/FavoritesGrid';
 import { FilmsGridSkeleton } from '@/components/UI/Caps/FilmsGridSkeleton';
 
-function FavoritesSkeleton({ title }: { title: string }) {
+type FavoritesSkeletonProps = { title: string; className?: string };
+
+function FavoritesSkeleton({ title, className }: FavoritesSkeletonProps) {
     return (
-        <>
+        <div className={className}>
             <Title className="mb-6">{title}</Title>
-            <FilmsGridSkeleton />
-        </>
+            <FilmsGridSkeleton cols={5} count={5} />
+        </div>
     );
 }
 
@@ -31,10 +33,10 @@ export default function FavoritesPage() {
 
     if (isLoading) {
         return (
-            <div className="container mx-auto px-4 py-8">
-                <FavoritesSkeleton title="Favorite Films" />
+            <>
+                <FavoritesSkeleton title="Favorite Films" className="mb-6" />
                 <FavoritesSkeleton title="Favorite TV Shows" />
-            </div>
+            </>
         );
     }
 

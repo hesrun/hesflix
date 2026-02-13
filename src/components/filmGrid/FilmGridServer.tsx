@@ -3,6 +3,7 @@ import { LucideFilm } from 'lucide-react';
 import { tmdb } from '@/lib/api/TMDB';
 import Pagination from '../UI/Pagination';
 import FilmGridClient from './FilmGridClient';
+import Delay from '@/helpers/Delay';
 
 interface PropsParams {
     type: 'movie' | 'tv';
@@ -22,8 +23,6 @@ export default async function FilmGridServer({ type, params }: PropsParams) {
     const vote_average_gte = Number(params['vote_average.gte']) || 0;
     const vote_average_lte = Number(params['vote_average.lte']) || 10;
 
-    console.log(params);
-
     const { results, total_pages } = await tmdb.media.getList(
         type,
         page,
@@ -36,14 +35,14 @@ export default async function FilmGridServer({ type, params }: PropsParams) {
     return (
         <>
             {results.length > 0 ? (
-                <div>
+                <>
                     <FilmGridClient data={results} type={type} />
                     <Pagination
                         type={type}
                         currentPage={page}
                         totalPages={total_pages}
                     />
-                </div>
+                </>
             ) : (
                 <div className="flex grow h-80 justify-center text-black">
                     <div className="bg-amber-500/70 p-12 rounded-4xl m-auto flex flex-col gap-4 justify-center items-center">

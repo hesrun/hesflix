@@ -148,7 +148,7 @@ export default function AiSearch() {
                 className="flex items-center border border-amber-500 rounded-md overflow-hidden p-2 mb-6"
             >
                 <input
-                    className="w-full px-4 py-2 bg-transparent outline-none text-2xl italic text-amber-500"
+                    className="w-full text-xl px-2 md:px-4 py-2 bg-transparent outline-none md:text-2xl italic text-amber-500"
                     type="text"
                     placeholder="Type your query..."
                     value={query}
@@ -172,7 +172,7 @@ export default function AiSearch() {
                     {PRESETS.map((item) => (
                         <button
                             onClick={() => handlePreset(item)}
-                            className="border-1 border-gray-800 rounded-md bg-gray-900 px-4 py-2 font-medium text-amber-500 italic hover:bg-gray-800 transition-colors cursor-pointer"
+                            className="text-left border-1 border-gray-800 rounded-md bg-gray-900 px-4 py-2 font-medium text-amber-500 italic hover:bg-gray-800 transition-colors cursor-pointer"
                         >
                             <span>„</span>
                             {item}
@@ -184,7 +184,7 @@ export default function AiSearch() {
 
             {response && response.results && response.results.length > 0 && (
                 <>
-                    <div className="mb-6 text-xl font-bold">
+                    <div className="mb-6 md:text-xl font-semibold">
                         <span className="text-white/50">You ask:</span>{' '}
                         <i className="text-amber-500">"{currentQuery}"</i>
                     </div>
@@ -207,7 +207,6 @@ export default function AiSearch() {
                             />
                         ))}
                     </div>
-
                     {currentPage < response.total_pages && (
                         <div className="flex justify-center mt-8">
                             <Button
@@ -221,7 +220,7 @@ export default function AiSearch() {
                     )}
                 </>
             )}
-            {loading && <FilmsGridSkeleton />}
+            {loading && <FilmsGridSkeleton cols={5} count={20} />}
 
             {response && response.results && response.results.length === 0 && (
                 <div className="bg-gray-900 border-1 border-gray-800 rounded-md text-center py-8 px-2 font-medium text-white/50 md:text-2xl italic">

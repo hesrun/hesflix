@@ -1,11 +1,11 @@
 import FilmGridServer from '@/components/filmGrid/FilmGridServer';
-import FilmGridLoading from '@/components/filmGrid/FilmGridLoading';
 import FiltersServer from '@/components/filters/FiltersServer';
 import Title from '@/components/UI/Title';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import FiltersSkeleton from '@/components/filters/FiltersSkeleton';
 import FiltersToggleBtn from '@/components/filters/FiltersToggleBtn';
+import { FilmsGridSkeleton } from '@/components/UI/Caps/FilmsGridSkeleton';
 
 interface MoviesPageProps {
     params: {
@@ -60,12 +60,14 @@ export default async function MoviesPage({
                 <Suspense fallback={<FiltersSkeleton />}>
                     <FiltersServer type={type} />
                 </Suspense>
-                <Suspense
-                    key={JSON.stringify(paramsSearch)}
-                    fallback={<FilmGridLoading />}
-                >
-                    <FilmGridServer type={type} params={paramsSearch} />
-                </Suspense>
+                <div className="grow">
+                    <Suspense
+                        key={JSON.stringify(paramsSearch)}
+                        fallback={<FilmsGridSkeleton cols={4} count={8} />}
+                    >
+                        <FilmGridServer type={type} params={paramsSearch} />
+                    </Suspense>
+                </div>
             </div>
         </>
     );

@@ -2,7 +2,12 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
-import { LucideUser, LucideLogOut, LucideHeart } from 'lucide-react';
+import {
+    LucideUser,
+    LucideLogOut,
+    LucideHeart,
+    LucideLogIn,
+} from 'lucide-react';
 import { useState } from 'react';
 import Button from '../UI/Button';
 
@@ -27,14 +32,22 @@ export default function UserMenu() {
 
     if (!isAuthenticated || !user) {
         return (
-            <div className="flex items-center gap-2">
-                <Button size="sm" variant="ghost" href="/signin">
-                    Login
-                </Button>
-                <Button size="sm" href="/signup">
-                    Sign Up
-                </Button>
-            </div>
+            <>
+                <Link
+                    href="/signin"
+                    className="bg-amber-500 text-black w-8 h-8 flex rounded-full md:hidden"
+                >
+                    <LucideLogIn width={18} className="m-auto" />
+                </Link>
+                <div className="hidden  md:flex items-center gap-2">
+                    <Button size="sm" variant="ghost" href="/signin">
+                        Login
+                    </Button>
+                    <Button size="sm" href="/signup">
+                        Sign Up
+                    </Button>
+                </div>
+            </>
         );
     }
 

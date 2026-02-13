@@ -1,11 +1,11 @@
 import { getCollectionBySlug } from '@/constants/collections';
 import CollectionGridServer from '@/components/collections/CollectionGridServer';
-import CollectionGridSkeleton from '@/components/collections/CollectionGridSkeleton';
 import BackLink from '@/components/UI/BackLink';
 import Title from '@/components/UI/Title';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
+import { FilmsGridSkeleton } from '@/components/UI/Caps/FilmsGridSkeleton';
 
 interface CollectionPageProps {
     params: {
@@ -54,7 +54,10 @@ export default async function CollectionPage({
             <Title type="h1" className="mb-4">
                 {collection.title}
             </Title>
-            <Suspense key={currentPage} fallback={<CollectionGridSkeleton />}>
+            <Suspense
+                key={currentPage}
+                fallback={<FilmsGridSkeleton cols={5} count={10} />}
+            >
                 <CollectionGridServer
                     collection={collection}
                     page={currentPage}

@@ -40,6 +40,10 @@ export default function HeaderNav({ className = '', onClick }: HeaderNavProps) {
                     );
                 })}
             </ul>
+            <div
+                onClick={onClick}
+                className="fixed inset-0 bg-black/80 -z-10 top-14 md:hidden"
+            ></div>
         </nav>
     );
 }
