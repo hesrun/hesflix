@@ -6,6 +6,7 @@ import { useCommentsStore } from '@/store/commentsStore';
 import { CommentDocument } from '@/types/comment';
 import { Trash2, Edit2 } from 'lucide-react';
 import Button from '@/components/UI/Button';
+import Textarea from '../UI/Textarea';
 
 interface ReplyProps {
     reply: CommentDocument;
@@ -41,14 +42,13 @@ export default function Reply({ reply }: ReplyProps) {
     };
 
     return (
-        <div className="flex gap-3 group">
+        <div className="flex gap-3 pl-14">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center flex-shrink-0">
                 <span className="text-black font-bold text-sm">
                     {reply.userName.charAt(0).toUpperCase()}
                 </span>
             </div>
-
-            <div className="flex-1 min-w-0">
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-white text-sm">
                         {reply.userName}
@@ -62,16 +62,31 @@ export default function Reply({ reply }: ReplyProps) {
                             minute: '2-digit',
                         })}
                     </span>
+                    {isOwner && (
+                        <div className="ml-auto flex gap-2">
+                            <button
+                                onClick={() => setIsEditing(true)}
+                                className="p-1 hover:bg-neutral-800 rounded transition-colors cursor-pointer"
+                                title="Edit"
+                            >
+                                <Edit2 size={14} className="text-gray-400" />
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="p-1 hover:bg-neutral-800 rounded transition-colors cursor-pointer"
+                                title="Delete"
+                            >
+                                <Trash2 size={14} className="text-red-400" />
+                            </button>
+                        </div>
+                    )}
                 </div>
-
                 {isEditing ? (
-                    <div className="space-y-2">
-                        <textarea
+                    <div className="mt-2 space-y-2">
+                        <Textarea
                             value={editContent}
                             onChange={(e) => setEditContent(e.target.value)}
-                            className="w-full px-3 py-2 bg-neutral-900 border border-gray-700 
-                                     rounded text-sm text-white resize-none focus:outline-none 
-                                     focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                            className=""
                             rows={2}
                             aria-label="Edit reply"
                         />
@@ -93,31 +108,6 @@ export default function Reply({ reply }: ReplyProps) {
                         <p className="text-gray-300 text-sm whitespace-pre-wrap break-words">
                             {reply.content}
                         </p>
-
-                        {isOwner && (
-                            <div className="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button
-                                    onClick={() => setIsEditing(true)}
-                                    className="p-1 hover:bg-neutral-800 rounded transition-colors"
-                                    title="Edit"
-                                >
-                                    <Edit2
-                                        size={14}
-                                        className="text-gray-400"
-                                    />
-                                </button>
-                                <button
-                                    onClick={handleDelete}
-                                    className="p-1 hover:bg-neutral-800 rounded transition-colors"
-                                    title="Delete"
-                                >
-                                    <Trash2
-                                        size={14}
-                                        className="text-red-400"
-                                    />
-                                </button>
-                            </div>
-                        )}
                     </>
                 )}
             </div>

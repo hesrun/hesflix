@@ -7,9 +7,11 @@ import {
     LucideLogOut,
     LucideHeart,
     LucideLogIn,
+    LucideList,
 } from 'lucide-react';
 import { useState } from 'react';
 import Button from '../UI/Button';
+import listsEnabled from '@/constants/featureflags';
 
 export default function UserMenu() {
     const { user, isAuthenticated, logout, isLoading } = useAuth();
@@ -91,6 +93,17 @@ export default function UserMenu() {
                                 <LucideHeart className="w-4 h-4" />
                                 My Favorites
                             </Link>
+                            {listsEnabled && (
+                                <Link
+                                    href="/watch-lists"
+                                    className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-800 transition"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    <LucideList className="w-4 h-4" />
+                                    Watch Lists
+                                </Link>
+                            )}
+
                             <Link
                                 href="/profile"
                                 className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-800 transition"

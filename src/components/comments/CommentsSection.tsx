@@ -6,6 +6,8 @@ import { MessageSquare, Star } from 'lucide-react';
 import Comment from './Comment';
 import NewCommentForm from './NewCommentForm';
 import Skeleton from 'react-loading-skeleton';
+import Title from '../UI/Title';
+import Textarea from '../UI/Textarea';
 
 interface CommentsSectionProps {
     movieId: string;
@@ -43,13 +45,9 @@ export default function CommentsSection({
     const commentsWithReplies = getCommentsWithReplies();
 
     return (
-        <section className="space-y-8">
-            {/* Header */}
-            <div>
-                <h2 className="text-3xl font-bold text-white flex items-center gap-3 mb-2">
-                    <MessageSquare size={28} className="text-amber-500" />
-                    {title}
-                </h2>
+        <>
+            <div className="mb-6 flex items-baseline gap-4">
+                <Title type="h2">{title}</Title>
                 {stats && (
                     <div className="flex items-center gap-4 text-sm text-gray-400">
                         <span className="font-medium">
@@ -71,7 +69,6 @@ export default function CommentsSection({
                 )}
             </div>
 
-            {/* Comments List */}
             {isLoading ? (
                 <div className="space-y-6">
                     {[1, 2, 3].map((i) => (
@@ -101,9 +98,9 @@ export default function CommentsSection({
                     ))}
                 </div>
             ) : commentsWithReplies.length === 0 ? (
-                <div className="text-center py-12">
+                <div className="bg-gray-900 border-1 border-gray-800 rounded-xl py-8 lg:py-12 px-4 flex flex-col items-center justify-center">
                     <MessageSquare
-                        size={48}
+                        size={32}
                         className="mx-auto text-gray-600 mb-3"
                     />
                     <p className="text-gray-500 text-lg">
@@ -123,14 +120,7 @@ export default function CommentsSection({
                     ))}
                 </div>
             )}
-
-            {/* New Comment Form */}
-            <div className="pt-8 border-t border-gray-800">
-                <h3 className="text-xl font-bold text-white mb-4">
-                    Add Your Comment
-                </h3>
-                <NewCommentForm movieId={movieId} mediaType={mediaType} />
-            </div>
-        </section>
+            <NewCommentForm movieId={movieId} mediaType={mediaType} />
+        </>
     );
 }

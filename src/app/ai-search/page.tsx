@@ -171,6 +171,7 @@ export default function AiSearch() {
                 <div className="flex flex-wrap gap-2 items-start lg:gap-4 mb-6">
                     {PRESETS.map((item) => (
                         <button
+                            key={item}
                             onClick={() => handlePreset(item)}
                             className="text-left border-1 border-gray-800 rounded-md bg-gray-900 px-4 py-2 font-medium text-amber-500 italic hover:bg-gray-800 transition-colors cursor-pointer"
                         >

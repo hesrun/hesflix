@@ -71,7 +71,6 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
             </>
         );
 
-        // is exist href - render like next Link
         if ('href' in props && props.href) {
             const { href, ...linkProps } = props;
             return (
@@ -86,7 +85,6 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
             );
         }
 
-        // Otherwise render as button
         const { disabled, ...buttonProps } = props as ButtonAsButton;
         const isDisabled = disabled || isLoading;
 

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { People } from '@/types/people';
-import NoPoster from '../UI/Caps/NoPoster';
+import NoProfile from '../UI/Caps/NoProfile';
 
 interface PeoplesCardProps {
     person: People;
@@ -29,7 +29,7 @@ export default function PeoplesCard({ person }: PeoplesCardProps) {
                         }`}
                     />
                 ) : (
-                    <NoPoster />
+                    <NoProfile />
                 )}
             </div>
             <div className="p-2 gap-2 xl:p-4 space-y-1">

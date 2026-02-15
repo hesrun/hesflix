@@ -1,7 +1,6 @@
 import { create } from 'zustand';
-import { FavoriteDocument } from '@/types/favorite';
+import { FavoriteDocument, FavoriteItem } from '@/types/favorite';
 import { favoritesService } from '@/lib/api/appwrite';
-import { FavoriteItem } from '@/lib/api/appwrite/favorites';
 
 interface FavoritesState {
     favorites: FavoriteDocument[];

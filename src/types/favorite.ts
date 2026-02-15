@@ -1,6 +1,6 @@
 import { Models } from 'appwrite';
 
-export interface FavoriteDocument extends Models.Document {
+export interface FavoriteItem {
     userId: string;
     movieId: number;
     title: string;
@@ -9,3 +9,5 @@ export interface FavoriteDocument extends Models.Document {
     rating?: number;
     releaseDate?: string;
 }
+
+export type FavoriteDocument = Models.Document & FavoriteItem;

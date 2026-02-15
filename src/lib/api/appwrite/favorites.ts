@@ -1,3 +1,4 @@
+import { FavoriteItem } from '@/types/favorite';
 import { tablesDB, DATABASE_ID, FAVORITES_TABLE_ID } from './config';
 import { ID, Query } from 'appwrite';
 import { toast } from 'sonner';
@@ -6,16 +7,6 @@ const TABLE_CONFIG = {
     databaseId: DATABASE_ID,
     tableId: FAVORITES_TABLE_ID,
 };
-
-export interface FavoriteItem {
-    userId: string;
-    movieId: number;
-    title: string;
-    posterPath: string | null;
-    mediaType: 'movie' | 'tv';
-    rating?: number;
-    releaseDate?: string;
-}
 
 export const favoritesService = {
     async addToFavorites(

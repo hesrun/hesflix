@@ -8,6 +8,7 @@ import { Star, Trash2, Edit2, MessageSquare } from 'lucide-react';
 import Button from '@/components/UI/Button';
 import RepliesList from './RepliesList';
 import ReplyForm from './ReplyForm';
+import Textarea from '../UI/Textarea';
 
 interface CommentProps {
     comment: CommentDocument;
@@ -57,14 +58,13 @@ export default function Comment({
                         {comment.userName.charAt(0).toUpperCase()}
                     </span>
                 </div>
-
-                <div className="flex-1 min-w-0">
+                <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <span className="font-bold text-white">
                             {comment.userName}
                         </span>
                         {comment.rating && (
-                            <div className="flex items-center gap-1 px-2 py-0.5 bg-amber-500/20 rounded">
+                            <div className="flex items-center gap-1">
                                 <Star
                                     size={14}
                                     className="fill-amber-500 text-amber-500"
@@ -83,16 +83,38 @@ export default function Comment({
                                 minute: '2-digit',
                             })}
                         </span>
+                        {isOwner && (
+                            <div className="ml-auto flex gap-2">
+                                <button
+                                    onClick={() => setIsEditing(true)}
+                                    className="p-1.5 hover:bg-neutral-800 rounded transition-colors cursor-pointer"
+                                    title="Edit"
+                                >
+                                    <Edit2
+                                        size={14}
+                                        className="text-gray-400"
+                                    />
+                                </button>
+                                <button
+                                    onClick={handleDelete}
+                                    className="p-1.5 hover:bg-neutral-800 rounded transition-colors cursor-pointer"
+                                    title="Delete"
+                                >
+                                    <Trash2
+                                        size={14}
+                                        className="text-red-400"
+                                    />
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     {isEditing ? (
                         <div className="space-y-3">
-                            <textarea
+                            <Textarea
                                 value={editContent}
                                 onChange={(e) => setEditContent(e.target.value)}
-                                className="w-full px-4 py-3 bg-neutral-900 border border-gray-700 
-                                         rounded text-white resize-none focus:outline-none 
-                                         focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                                className="mt-2"
                                 rows={3}
                                 aria-label="Edit comment"
                             />
@@ -114,46 +136,18 @@ export default function Comment({
                             <p className="text-gray-200 whitespace-pre-wrap break-words mb-3">
                                 {comment.content}
                             </p>
-
-                            <div className="flex items-center gap-3">
-                                {user && (
-                                    <button
-                                        onClick={() =>
-                                            setShowReplyForm(!showReplyForm)
-                                        }
-                                        className="flex items-center gap-1 text-sm text-gray-400 
-                                                 hover:text-amber-500 transition-colors"
-                                    >
-                                        <MessageSquare size={14} />
-                                        Reply
-                                    </button>
-                                )}
-
-                                {isOwner && (
-                                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button
-                                            onClick={() => setIsEditing(true)}
-                                            className="p-1.5 hover:bg-neutral-800 rounded transition-colors"
-                                            title="Edit"
-                                        >
-                                            <Edit2
-                                                size={14}
-                                                className="text-gray-400"
-                                            />
-                                        </button>
-                                        <button
-                                            onClick={handleDelete}
-                                            className="p-1.5 hover:bg-neutral-800 rounded transition-colors"
-                                            title="Delete"
-                                        >
-                                            <Trash2
-                                                size={14}
-                                                className="text-red-400"
-                                            />
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
+                            {user && (
+                                <button
+                                    onClick={() =>
+                                        setShowReplyForm(!showReplyForm)
+                                    }
+                                    className="flex items-center gap-1 text-sm text-gray-400 
+                                                 hover:text-amber-500 transition-colors cursor-pointer"
+                                >
+                                    <MessageSquare size={14} />
+                                    Reply
+                                </button>
+                            )}
                         </>
                     )}
                 </div>
