@@ -13,6 +13,11 @@ interface WatchListsState {
     ) => Promise<void>;
 
     loadLists: (userId: string) => Promise<void>;
+    removeWatchList: (rowId: string) => Promise<void>;
+    editWatchList: (
+        rowId: string,
+        item: Omit<WatchListItem, 'userId'>,
+    ) => Promise<void>;
 }
 
 export const useWatchListsStore = create<WatchListsState>((set, get) => ({
@@ -44,6 +49,38 @@ export const useWatchListsStore = create<WatchListsState>((set, get) => ({
             }));
         } catch (error) {
             console.error('Error adding list:', error);
+            throw error;
+        }
+    },
+    removeWatchList: async (rowId: string) => {
+        try {
+            await watchListService.removeWatchList(rowId);
+            set((state) => ({
+                watchlists: state.watchlists.filter(
+                    (item) => item.$id !== rowId,
+                ),
+            }));
+        } catch (error) {
+            console.error('Error delete list:', error);
+            throw error;
+        }
+    },
+    editWatchList: async (
+        rowId: string,
+        item: Omit<WatchListItem, 'userId'>,
+    ) => {
+        try {
+            const updatedList = await watchListService.editWatchList(
+                rowId,
+                item,
+            );
+            set((state) => ({
+                watchlists: state.watchlists.map((list) =>
+                    list.$id === rowId ? updatedList : list,
+                ),
+            }));
+        } catch (error) {
+            console.error('Error editing list:', error);
             throw error;
         }
     },

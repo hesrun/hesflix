@@ -23,7 +23,7 @@ export const watchListService = {
                     description: item.description,
                 },
             });
-            toast.success(`${item.name} was created`);
+            toast.success(`List "${item.name}" was created`);
             return row;
         } catch (error) {
             console.error('Create list error:', error);
@@ -44,6 +44,37 @@ export const watchListService = {
             return response.rows;
         } catch (error) {
             console.log('Get watch list error', error);
+            throw error;
+        }
+    },
+    async removeWatchList(rowId: string): Promise<void> {
+        try {
+            await tablesDB.deleteRow({
+                ...TABLE_CONFIG,
+                rowId: rowId,
+            });
+            toast.success('Removed from watch lists');
+        } catch (error) {
+            console.error('Remove from watch list error:', error);
+            toast.error('Failed to remove from watchlist');
+            throw error;
+        }
+    },
+    async editWatchList(
+        rowId: string,
+        item: Omit<WatchListItem, 'userId'>,
+    ): Promise<any> {
+        try {
+            const row = await tablesDB.updateRow({
+                ...TABLE_CONFIG,
+                rowId: rowId,
+                data: item,
+            });
+            toast.success('Watch list was edited');
+            return row;
+        } catch (error) {
+            console.error('Update watch list error:', error);
+            toast.error('Failed to update watchlist');
             throw error;
         }
     },

@@ -2,24 +2,51 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
 import Textarea from '../UI/Textarea';
-import { useWatchListsStore } from '@/store/watchListsStore';
 import { useAuth } from '@/contexts/AuthContext';
+import { WatchListDocument, WatchListItem } from '@/types/watchLists';
+import { useEffect } from 'react';
 
-interface CreateList {
+interface CreateListProps {
     name: string;
     description: string;
 }
+interface FromProps {
+    initialItem: WatchListDocument | null;
+    onAddList: (userId: string, item: CreateListProps) => Promise<void>;
+    onClose: () => void;
+    onEdit: (rowId: string, item: Omit<WatchListItem, 'userId'>) => void;
+}
 
-export default function CreateWatchListForm() {
-    const { isLoading, addList } = useWatchListsStore();
+export default function CreateWatchListForm({
+    initialItem,
+    onAddList,
+    onClose,
+    onEdit,
+}: FromProps) {
     const { user } = useAuth();
+    const { register, handleSubmit, reset } = useForm<CreateListProps>();
 
-    const { register, handleSubmit } = useForm<CreateList>();
-    const onSubmit: SubmitHandler<CreateList> = (data) => {
-        if (user?.$id) {
-            addList(user?.$id, data);
+    useEffect(() => {
+        if (initialItem) {
+            reset({
+                name: initialItem.name,
+                description: initialItem.description,
+            });
+        } else {
+            reset({ name: '', description: '' });
         }
+    }, [initialItem, reset]);
+
+    const onSubmit: SubmitHandler<CreateListProps> = async (data) => {
+        if (!user?.$id) return;
+        if (initialItem) {
+            await onEdit(initialItem.$id, data);
+        } else {
+            await onAddList(user?.$id, data);
+        }
+        onClose();
     };
+
     return (
         <>
             <form
@@ -33,8 +60,10 @@ export default function CreateWatchListForm() {
                     rows={6}
                 />
                 <div className="flex gap-4">
-                    <Button type="submit">Save</Button>
-                    <Button variant="outline" type="button">
+                    <Button type="submit">
+                        {initialItem ? 'Update' : 'Save'}
+                    </Button>
+                    <Button onClick={onClose} variant="outline" type="button">
                         Cancle
                     </Button>
                 </div>
