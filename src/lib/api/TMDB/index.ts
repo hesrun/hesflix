@@ -84,11 +84,6 @@ export const tmdb = {
     },
 
     search: {
-        multi(query: string): Promise<SearchResponse> {
-            const url = `/api/search?query=${encodeURIComponent(query)}`;
-            return fetchFromTMDB<SearchResponse>(url);
-        },
-
         direct(query: string): Promise<SearchResponse> {
             const url = `${BASE_URL}/search/multi?query=${encodeURIComponent(query)}`;
             return fetchFromTMDB<SearchResponse>(url);

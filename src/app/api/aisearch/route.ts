@@ -1,22 +1,34 @@
 import { generateText } from 'ai';
 import { groq } from '@ai-sdk/groq';
+import { z } from 'zod';
 import { MovieGenresMap, TVGenreMap } from '@/constants/genresMapping';
 import { tmdb } from '@/lib/api/TMDB';
 
-interface AISearchParams {
-    title: string | null;
-    similarTo: string | null;
-    actor: string[];
-    crew: string[];
-    genre: number[];
-    keywords: string[];
-    language: string | null;
-    minRating: number | null;
-    maxRating: number | null;
-    yearFrom: number | null;
-    yearTo: number | null;
-    sortBy: string;
-    mediaType: 'movie' | 'tv' | 'all';
+const AISearchParamsSchema = z.object({
+    title: z.string().nullable(),
+    similarTo: z.string().nullable(),
+    actor: z.array(z.string()),
+    crew: z.array(z.string()),
+    genre: z.array(z.number()),
+    keywords: z.array(z.string()),
+    language: z.string().nullable(),
+    minRating: z.number().nullable(),
+    maxRating: z.number().nullable(),
+    yearFrom: z.number().nullable(),
+    yearTo: z.number().nullable(),
+    sortBy: z.string(),
+    mediaType: z.enum(['movie', 'tv', 'all']),
+});
+
+type AISearchParams = z.infer<typeof AISearchParamsSchema>;
+
+function extractJsonFromText(text: string): string {
+    const trimmed = text.trim();
+    const codeBlockMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (codeBlockMatch) {
+        return codeBlockMatch[1].trim();
+    }
+    return trimmed;
 }
 
 export async function GET(request: Request) {
@@ -62,9 +74,35 @@ export async function GET(request: Request) {
             temperature: 0.1,
         });
 
-        console.log('AI Response:', text);
-
-        const params: AISearchParams = JSON.parse(text);
+        let params: AISearchParams;
+        try {
+            const jsonStr = extractJsonFromText(text);
+            const parsed = JSON.parse(jsonStr);
+            const result = AISearchParamsSchema.safeParse(parsed);
+            if (!result.success) {
+                console.error('AI response validation failed:', result.error.flatten());
+                return Response.json(
+                    {
+                        error: 'Invalid AI response format',
+                        details: result.error.flatten().fieldErrors,
+                    },
+                    { status: 502 },
+                );
+            }
+            params = result.data;
+        } catch (parseError) {
+            console.error('Failed to parse AI response:', parseError);
+            return Response.json(
+                {
+                    error: 'Failed to parse AI response',
+                    details:
+                        parseError instanceof Error
+                            ? parseError.message
+                            : 'Invalid JSON',
+                },
+                { status: 502 },
+            );
+        }
 
         if (params.similarTo) {
             if (params.mediaType === 'movie') {
@@ -229,7 +267,21 @@ export async function GET(request: Request) {
             });
         }
 
-        const discoverParams: any = {
+        const discoverParams: {
+            page: number;
+            sort_by: string;
+            with_cast?: string;
+            with_crew?: string;
+            with_genres?: string;
+            with_keywords?: string;
+            with_original_language?: string;
+            'vote_average.gte'?: number;
+            'vote_average.lte'?: number;
+            'primary_release_date.gte'?: string;
+            'primary_release_date.lte'?: string;
+            'first_air_date.gte'?: string;
+            'first_air_date.lte'?: string;
+        } = {
             page: page,
             sort_by: params.sortBy,
         };
