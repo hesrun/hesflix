@@ -1,4 +1,4 @@
-import { getPersonDetailCached } from '@/lib/api/TMDB/personCache';
+import { getPersonDetailCached } from '@/lib/api/TMDB/tmdbCache';
 import Title from '../UI/Title';
 import Image from 'next/image';
 import decodeHtmlEntities from '@/utils/DecodeHtmlEntities';

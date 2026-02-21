@@ -9,12 +9,12 @@ export const metadata: Metadata = {
     description:
         'Discover and explore thousands of movies and TV shows. Browse popular content, trending titles, and create your personal watchlist.',
     openGraph: {
-        title: 'HessFlix - Discover Movies and TV Shows',
+        title: 'HesFlix - Discover Movies and TV Shows',
         type: 'website',
         description:
             'Discover and explore thousands of movies and TV shows. Browse popular content, trending titles, and create your personal watchlist.',
         url: process.env.NEXT_PUBLIC_BASE_URL,
-        siteName: 'HessFlix',
+        siteName: 'HesFlix',
     },
 };
 

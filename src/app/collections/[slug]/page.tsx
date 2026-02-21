@@ -24,12 +24,12 @@ export async function generateMetadata({
 
     if (!collection) {
         return {
-            title: 'Collection Not Found - HessFlix',
+            title: 'Collection Not Found - HesFlix',
         };
     }
 
     return {
-        title: `${collection.title} - HessFlix`,
+        title: `${collection.title} - HesFlix`,
         description: collection.description,
     };
 }

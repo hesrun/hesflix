@@ -1,4 +1,4 @@
-import { tmdb } from '@/lib/api/TMDB';
+import { getMediaDetailCached } from '@/lib/api/TMDB/tmdbCache';
 import FilmDetailClient from './FilmDetailClient';
 
 interface mediaDetailProps {
@@ -7,6 +7,6 @@ interface mediaDetailProps {
 }
 
 export default async function FilmDetailServer({ id, type }: mediaDetailProps) {
-    const mediaData = await tmdb.media.getDetail(type, id);
+    const mediaData = await getMediaDetailCached(type, id);
     return <FilmDetailClient data={mediaData} type={type} />;
 }

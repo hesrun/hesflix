@@ -1,6 +1,6 @@
 import PersonDetailServer from '@/components/person/PersonDetailServer';
 import Title from '@/components/UI/Title';
-import { getPersonDetailCached } from '@/lib/api/TMDB/personCache';
+import { getPersonDetailCached } from '@/lib/api/TMDB/tmdbCache';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
@@ -50,7 +50,7 @@ export async function generateMetadata({
             description: metaDescription,
             url: url,
             images: metaImage ? [{ url: metaImage }] : [],
-            siteName: 'HessFlix',
+            siteName: 'HesFlix',
         },
     };
     return meta;

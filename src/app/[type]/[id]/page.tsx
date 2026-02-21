@@ -1,4 +1,4 @@
-import { tmdb } from '@/lib/api/TMDB';
+import { getMediaDetailCached } from '@/lib/api/TMDB/tmdbCache';
 import CreditsListServer from '@/components/creditsList/CreditsListServer';
 import FilmDetail from '@/components/filmDetail/FilmDetailClient';
 import BackLink from '@/components/UI/BackLink';
@@ -25,7 +25,7 @@ export async function generateMetadata({
     params,
 }: MediaDetailProps): Promise<Metadata> {
     const { id, type } = await params;
-    const data = await tmdb.media.getDetail(type, parseInt(id));
+    const data = await getMediaDetailCached(type, parseInt(id));
     const metaTitle =
         type === 'movie' ? (data as Movie).title : (data as TV).name;
     const metaDescription = data.overview;
@@ -44,7 +44,7 @@ export async function generateMetadata({
             description: metaDescription,
             url: url,
             images: metaImage ? [{ url: metaImage }] : [],
-            siteName: 'HessFlix',
+            siteName: 'HesFlix',
         },
     };
     return meta;

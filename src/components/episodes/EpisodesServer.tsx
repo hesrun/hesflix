@@ -1,4 +1,4 @@
-import { tmdb } from '@/lib/api/TMDB';
+import { getSeasonCached } from '@/lib/api/TMDB/tmdbCache';
 import Title from '../UI/Title';
 import EpisodesList from './EpisodesList';
 
@@ -11,7 +11,7 @@ export default async function EpisodesServer({
     id,
     season_id,
 }: EpisodesServerProps) {
-    const data = await tmdb.seasons.getSeason(id, season_id);
+    const data = await getSeasonCached(id, season_id);
     return (
         <>
             <Title type="h2" className="mb-6 mt-4">

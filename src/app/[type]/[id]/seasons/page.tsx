@@ -3,7 +3,7 @@ import SeasonsSkeleton from '@/components/seasons/SeasonsSkeleton';
 import BackLink from '@/components/UI/BackLink';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
-import { tmdb } from '@/lib/api/TMDB';
+import { getMediaDetailCached } from '@/lib/api/TMDB/tmdbCache';
 import { Metadata } from 'next';
 import { TV } from '@/types/tv';
 
@@ -21,11 +21,11 @@ export async function generateMetadata({
 
     if (type !== 'tv') {
         return {
-            title: 'Seasons - HessFlix',
+            title: 'Seasons - HesFlix',
         };
     }
 
-    const data = await tmdb.media.getDetail(type, id);
+    const data = await getMediaDetailCached(type, id);
     const tvShow = data as TV;
     const metaTitle = `${tvShow.name} - Seasons`;
     const metaDescription = `Browse all seasons of ${tvShow.name}`;
@@ -43,7 +43,7 @@ export async function generateMetadata({
             description: metaDescription,
             url: url,
             images: metaImage ? [{ url: metaImage }] : [],
-            siteName: 'HessFlix',
+            siteName: 'HesFlix',
         },
     };
 }

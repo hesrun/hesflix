@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { COLLECTIONS } from '@/constants/collections';
 
-/** User-Agent ботов и скраперов — возвращаем 403 */
+/** User-Agent bots and scrapers — return 403 */
 const BOT_PATTERNS = [
     /curl/i,
     /wget/i,
@@ -51,12 +51,12 @@ function addCacheHeaders(res: NextResponse): NextResponse {
     return res;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const userAgent = request.headers.get('user-agent');
     const isHeavyRoute = /^\/(peoples|movie|tv|collections)\//.test(pathname);
 
-    // Блокируем известных ботов на динамических страницах
+    // bots blocking
     if (isBot(userAgent) && isHeavyRoute) {
         return new NextResponse(null, { status: 403 });
     }
@@ -88,7 +88,7 @@ export function middleware(request: NextRequest) {
         return addCacheHeaders(NextResponse.next());
     }
 
-    // /collections/trending-today и т.д.
+    // /collections/trending-today and etc.
     const collectionsMatch = pathname.match(/^\/collections\/([^/]+)(?:\/|$)/);
     if (collectionsMatch) {
         if (!validSlugs.has(collectionsMatch[1])) {

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Title from '../UI/Title';
-import { tmdb } from '@/lib/api/TMDB';
+import { getMediaDetailCached } from '@/lib/api/TMDB/tmdbCache';
 import { TV } from '@/types/tv';
 import SeasonsList from './SeasonsList';
 
@@ -10,7 +10,7 @@ interface SeasonsServerProps {
 }
 
 export default async function SeasonsServer({ id, type }: SeasonsServerProps) {
-    const tv = (await tmdb.media.getDetail(type, id)) as TV;
+    const tv = (await getMediaDetailCached(type, id)) as TV;
     return (
         <div>
             <div className="relative -mx-4 overflow-hidden rounded-lg mb-8 sm:mx-0 ">

@@ -4,7 +4,7 @@ import Title from '@/components/UI/Title';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Collections - HessFlix',
+    title: 'Collections - HesFlix',
     description: 'Explore curated collections of movies and TV shows',
 };
 

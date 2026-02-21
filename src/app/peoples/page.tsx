@@ -19,7 +19,7 @@ export const metadata: Metadata = {
         description:
             'Browse popular actors and actresses from movies and TV shows',
         url: `${process.env.NEXT_PUBLIC_BASE_URL}/peoples`,
-        siteName: 'HessFlix',
+        siteName: 'HesFlix',
     },
 };
 
