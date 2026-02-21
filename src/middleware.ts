@@ -2,6 +2,33 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { COLLECTIONS } from '@/constants/collections';
 
+/** User-Agent ботов и скраперов — возвращаем 403 */
+const BOT_PATTERNS = [
+    /curl/i,
+    /wget/i,
+    /python-requests/i,
+    /axios/i,
+    /node-fetch/i,
+    /go-http-client/i,
+    /AhrefsBot/i,
+    /SemrushBot/i,
+    /MJ12bot/i,
+    /DotBot/i,
+    /GPTBot/i,
+    /ChatGPT-User/i,
+    /Claude-Web/i,
+    /CCBot/i,
+    /ScoutJet/i,
+    /petalbot/i,
+    /Bytespider/i,
+    /DataForSeoBot/i,
+];
+
+function isBot(userAgent: string | null): boolean {
+    if (!userAgent) return false;
+    return BOT_PATTERNS.some((p) => p.test(userAgent));
+}
+
 const MAX_TMDB_ID = 999_999_999;
 
 function isValidTmdbId(id: string): boolean {
@@ -26,6 +53,12 @@ function addCacheHeaders(res: NextResponse): NextResponse {
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
+    const userAgent = request.headers.get('user-agent');
+
+    // Блокируем известных ботов на динамических страницах
+    if (isBot(userAgent) && /^\/(peoples|movie|tv|collections)\//.test(pathname)) {
+        return new NextResponse(null, { status: 403 });
+    }
 
     // /peoples/123
     const peoplesMatch = pathname.match(/^\/peoples\/([^/]+)$/);
