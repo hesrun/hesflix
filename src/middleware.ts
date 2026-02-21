@@ -54,9 +54,10 @@ function addCacheHeaders(res: NextResponse): NextResponse {
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const userAgent = request.headers.get('user-agent');
+    const isHeavyRoute = /^\/(peoples|movie|tv|collections)\//.test(pathname);
 
     // Блокируем известных ботов на динамических страницах
-    if (isBot(userAgent) && /^\/(peoples|movie|tv|collections)\//.test(pathname)) {
+    if (isBot(userAgent) && isHeavyRoute) {
         return new NextResponse(null, { status: 403 });
     }
 
