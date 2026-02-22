@@ -51,7 +51,7 @@ function addCacheHeaders(res: NextResponse): NextResponse {
     return res;
 }
 
-export function proxy(request: NextRequest) {
+export default function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const userAgent = request.headers.get('user-agent');
     const isHeavyRoute = /^\/(peoples|movie|tv|collections)\//.test(pathname);
