@@ -25,7 +25,7 @@ const BOT_PATTERNS = [
 ];
 
 function isBot(userAgent: string | null): boolean {
-    if (!userAgent) return false;
+    if (!userAgent || userAgent === '' || userAgent === '-') return true;
     return BOT_PATTERNS.some((p) => p.test(userAgent));
 }
 
