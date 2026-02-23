@@ -4,6 +4,8 @@ import CircleProgress from '../UI/CircleProgress';
 import NoPoster from '../UI/Caps/NoPoster';
 import RemoveFavoriteButton from '../favorites/RemoveFavoriteButton';
 import FavoriteButton from '../favorites/FavoriteButton';
+import RemoveFromListButton from '../wathcLists/RemoveFromListButton';
+import AddToListButton from '../wathcLists/AddToListButton';
 
 interface FilmCardProps {
     data: {
@@ -16,10 +18,12 @@ interface FilmCardProps {
         $id?: string;
     };
     removeFavorite?: boolean;
+    removeFromList?: { listId: string };
 }
 export default function FilmCard({
     data,
     removeFavorite = false,
+    removeFromList,
 }: FilmCardProps) {
     const { movieId, title, posterPath, mediaType, rating, releaseDate } = data;
     return (
@@ -46,13 +50,18 @@ export default function FilmCard({
                             <CircleProgress vote={rating} />
                         </div>
                     )}
-                    {removeFavorite && data.$id ? (
-                        <RemoveFavoriteButton id={data.$id} />
-                    ) : !removeFavorite ? (
-                        <div className="absolute top-2 left-2">
-                            <FavoriteButton {...data} />
+                    {removeFromList && data.$id ? (
+                        <RemoveFromListButton id={data.$id} listId={removeFromList.listId} />
+                    ) : (
+                        <div className="absolute top-2 left-2 flex gap-1">
+                            {removeFavorite && data.$id ? (
+                                <RemoveFavoriteButton id={data.$id} />
+                            ) : (
+                                <FavoriteButton {...data} />
+                            )}
+                            <AddToListButton {...data} />
                         </div>
-                    ) : null}
+                    )}
                 </div>
                 <div className="p-2 gap-2 xl:p-4 flex items-baseline justify-between">
                     <h3 className="font-medium text-amber-500 text-sm xl:text-base leading-snug">

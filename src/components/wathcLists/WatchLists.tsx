@@ -1,7 +1,8 @@
 import { WatchListDocument } from '@/types/watchLists';
 import { LucidePencil, LucidePlus, LucideTrash2 } from 'lucide-react';
+import { useWatchListFilmsStore } from '@/store/watchListFilmsStore';
+import Link from 'next/link';
 import WatchListSkeleton from './WatchListSkeleton';
-import { array } from 'zod';
 
 interface WatchListsProps {
     isLoading: boolean;
@@ -18,6 +19,7 @@ export default function WatchLists({
     onEdit,
     onAdd,
 }: WatchListsProps) {
+    const { getFilmCount } = useWatchListFilmsStore();
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {isLoading && (
@@ -32,9 +34,10 @@ export default function WatchLists({
             {!isLoading && (
                 <>
                     {lists.map((item) => (
-                        <div
+                        <Link
                             key={item.$id}
-                            className="bg-gray-900 border border-gray-800 p-4 rounded-xl space-y-2 lg:min-h-24 hover:border-amber-500 transition-colors"
+                            href={`/watch-lists/${item.$id}`}
+                            className="block bg-gray-900 border border-gray-800 p-4 rounded-xl space-y-2 lg:min-h-24 hover:border-amber-500 transition-colors"
                         >
                             <div className="flex items-center">
                                 <h3 className="text-amber-500 font-semibold text-xl md:text-2xl">
@@ -42,14 +45,22 @@ export default function WatchLists({
                                 </h3>
                                 <div className="flex items-center gap-1 ml-auto">
                                     <button
-                                        onClick={() => onEdit(item)}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            onEdit(item);
+                                        }}
                                         title="edit watchlist"
                                         className="p-1.5 hover:bg-white/10 rounded transition-colors cursor-pointer"
                                     >
                                         <LucidePencil width={14} height={14} />
                                     </button>
                                     <button
-                                        onClick={() => onDelete(item.$id)}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            onDelete(item.$id);
+                                        }}
                                         title="remove watchlist"
                                         className="p-1.5 hover:bg-white/10 rounded transition-colors cursor-pointer text-red-500"
                                     >
@@ -57,13 +68,14 @@ export default function WatchLists({
                                     </button>
                                 </div>
                             </div>
-                            <p
-                                className="text-gray-500 leading-none text-sm
-					"
-                            >
+                            <p className="text-gray-500 leading-none text-sm">
                                 {item.description}
                             </p>
-                        </div>
+                            <p className="text-amber-500/80 text-sm font-medium">
+                                {getFilmCount(item.$id)} film
+                                {getFilmCount(item.$id) !== 1 ? 's' : ''}
+                            </p>
+                        </Link>
                     ))}
                     <button
                         onClick={onAdd}

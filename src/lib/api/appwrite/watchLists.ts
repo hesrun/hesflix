@@ -1,5 +1,6 @@
 import { WatchListItem } from '@/types/watchLists';
 import { tablesDB, DATABASE_ID, WATHCLISTS_TABLE_ID } from './config';
+import { watchListFilmsService } from './watchListFilms';
 import { ID, Query } from 'appwrite';
 import { toast } from 'sonner';
 
@@ -49,6 +50,7 @@ export const watchListService = {
     },
     async removeWatchList(rowId: string): Promise<void> {
         try {
+            await watchListFilmsService.deleteAllFilmsByWatchListId(rowId);
             await tablesDB.deleteRow({
                 ...TABLE_CONFIG,
                 rowId: rowId,

@@ -6,6 +6,7 @@ import WatchLists from '@/components/wathcLists/WatchLists';
 import listsEnabled from '@/constants/featureflags';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWatchListsStore } from '@/store/watchListsStore';
+import { useWatchListFilmsStore } from '@/store/watchListFilmsStore';
 import { WatchListDocument } from '@/types/watchLists';
 import { useEffect, useState } from 'react';
 
@@ -22,6 +23,7 @@ export default function WatchListsPage() {
         removeWatchList,
         editWatchList,
     } = useWatchListsStore();
+    const { getFilmCount } = useWatchListFilmsStore();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [editingItem, setEditingItem] = useState<WatchListDocument | null>(
         null,
@@ -44,7 +46,13 @@ export default function WatchListsPage() {
 
     useEffect(() => {
         if (user?.$id) loadLists(user?.$id);
-    }, [user]);
+    }, [user, loadLists]);
+
+    useEffect(() => {
+        if (watchlists.length > 0) {
+            loadFilmCounts(watchlists.map((l) => l.$id));
+        }
+    }, [watchlists, loadFilmCounts]);
 
     return (
         <div className="space-y-6">

@@ -8,6 +8,7 @@ import Title from '../UI/Title';
 import Link from 'next/link';
 import NoPoster from '../UI/Caps/NoPoster';
 import FavoriteButton from '../favorites/FavoriteButton';
+import AddToListButton from '../wathcLists/AddToListButton';
 import Button from '../UI/Button';
 
 interface mediaDetailProps {
@@ -25,7 +26,7 @@ export default function FilmDetailClient({ data, type }: mediaDetailProps) {
         tagline: type === 'tv' ? (data as TV).tagline : undefined,
         seasons: type === 'tv' ? (data as TV).seasons : null,
     };
-    const favoriteData = {
+    const filmCardData = {
         movieId: data.id,
         title: media.title,
         posterPath: data.poster_path,
@@ -43,8 +44,9 @@ export default function FilmDetailClient({ data, type }: mediaDetailProps) {
                             media.date.split('-')[0]
                         })`}</span>
                     </div>
-                    <div>
-                        <FavoriteButton {...favoriteData} />
+                    <div className="flex gap-2">
+                        <FavoriteButton {...filmCardData} />
+                        <AddToListButton {...filmCardData} />
                     </div>
                 </div>
                 <div className="shrink-0 rounded-lg overflow-hidden md:col-start-1 md:col-end-5 md:row-start-1 md:row-end-3">
